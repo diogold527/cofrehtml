@@ -1,0 +1,2508 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cofre · Orçamento</title>
+<style>
+/* ===== theme.css ===== */
+:root {
+  color-scheme: light;
+  --color-primary: #0466c8;
+  --color-primary-hover: #0353a4;
+  --color-primary-strong: #023e7d;
+  --color-brand-deep: #002855;
+  --color-brand-darker: #001845;
+  --color-brand-darkest: #001233;
+  --color-text: #0b1b34;
+  --color-text-muted: #5c677d;
+  --color-text-subtle: #7d8597;
+  --color-text-soft: #979dac;
+  --color-border: #e3e8f2;
+  --color-border-header: #dbe6f4;
+  --color-border-row: #eef1f7;
+  --color-background: #eef2f9;
+  --color-surface: #ffffff;
+  --color-surface-soft: #f5f8fd;
+  --color-surface-hover: #f8fafd;
+  --color-surface-muted: #fbfcff;
+  --color-surface-focus: #e8f1fb;
+  --color-success: #1f9d55;
+  --color-success-light: #3cbe80;
+  --color-success-surface: #e4f5ec;
+  --color-success-border: #bfe6cf;
+  --color-warning: #d98a00;
+  --color-warning-light: #f2b23c;
+  --color-warning-surface: #fdf1dd;
+  --color-warning-border: #f2dcae;
+  --color-warning-field: #fff8e6;
+  --color-warning-text: #946600;
+  --color-danger: #d13b3b;
+  --color-danger-light: #e56b6b;
+  --color-danger-surface: #fbe6e6;
+  --color-danger-border: #f0c4c4;
+  --color-chart-empty: #c9d2e3;
+  --color-chart-track: #eaeef6;
+  --color-chart-rule: #9aa5ba;
+  --color-user-1-surface: #e2edfb;
+  --color-user-1-text: #0353a4;
+  --color-user-2-surface: #e9e6f6;
+  --color-user-2-text: #5b4bb3;
+  --color-user-3-surface: #e4f5ec;
+  --color-user-3-text: #1f7a48;
+  --color-user-4-surface: #fdf1dd;
+  --color-user-4-text: #946600;
+  --color-focus-ring: rgba(4, 102, 200, .35);
+  --color-brand-shadow: rgba(4, 102, 200, .18);
+  --color-selected-shadow: rgba(4, 102, 200, .25);
+  --color-card-shadow: rgba(2, 40, 85, .06);
+  --color-header-shadow: rgba(2, 40, 85, .05);
+  --color-toast-shadow: rgba(0, 24, 69, .4);
+  --color-forecast: rgba(125, 141, 167, .16);
+  --header-gradient: linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface-focus) 100%);
+  --brand-gradient: linear-gradient(180deg, #38a3ff, var(--color-primary));
+  --chart-gradient: linear-gradient(180deg, var(--color-primary), var(--color-primary-hover));
+  --chart-current-gradient: linear-gradient(180deg, var(--color-primary-strong), var(--color-brand-deep));
+  --chart-success-gradient: linear-gradient(180deg, var(--color-success-light), var(--color-success));
+  --chart-warning-gradient: linear-gradient(180deg, var(--color-warning-light), var(--color-warning));
+  --chart-danger-gradient: linear-gradient(180deg, var(--color-danger-light), var(--color-danger));
+  --radius-card: 14px;
+  --radius-control: 9px;
+  --shadow-card: 0 1px 2px var(--color-card-shadow), 0 8px 24px var(--color-card-shadow);
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Roboto Mono", Menlo, Consolas, monospace;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --color-chart-1: #0466c8;
+  --color-chart-2: #0353a4;
+  --color-chart-3: #023e7d;
+  --color-chart-4: #002855;
+  --color-chart-5: #001845;
+  --color-chart-6: #001233;
+  --color-chart-7: #33415c;
+  --color-chart-8: #5c677d;
+  --color-chart-9: #7d8597;
+  --color-chart-10: #979dac;
+}
+
+/* ===== main.css ===== */
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { min-width: 320px; background: var(--color-background); color: var(--color-text); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+header.app { padding: 14px 20px; border-bottom: 1px solid var(--color-border-header); background: var(--header-gradient); box-shadow: 0 1px 8px var(--color-header-shadow); }
+.bar { display: flex; max-width: 1180px; margin: 0 auto; align-items: center; gap: 18px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 11px; color: var(--color-primary-strong); font-weight: 700; letter-spacing: .3px; }
+.brand .mark { display: grid; width: 30px; height: 30px; border-radius: 8px; background: var(--brand-gradient); box-shadow: inset 0 0 0 1px var(--color-focus-ring), 0 4px 12px var(--color-brand-shadow); color: var(--color-surface); place-items: center; }
+.brand .mark svg { width: 16px; height: 16px; }
+.brand small { display: block; color: var(--color-text-muted); font-size: 11px; font-weight: 400; letter-spacing: .5px; }
+.spacer { flex: 1; }
+.seg { display: inline-flex; padding: 3px; border: 1px solid var(--color-border-header); border-radius: 10px; background: var(--color-surface-soft); }
+.seg button, .monthnav button { all: unset; cursor: pointer; }
+.seg button { padding: 7px 14px; border-radius: 7px; color: var(--color-text-muted); font-size: 13px; font-weight: 600; transition: .15s; }
+.seg button[aria-pressed="true"] { background: var(--color-primary); box-shadow: 0 1px 6px var(--color-selected-shadow); color: var(--color-surface); }
+.monthnav { display: inline-flex; padding: 3px 4px; border: 1px solid var(--color-border-header); border-radius: 10px; background: var(--color-surface-soft); align-items: center; gap: 6px; }
+.monthnav button { display: grid; width: 30px; height: 30px; border-radius: 7px; color: var(--color-primary-strong); place-items: center; }
+.monthnav button:hover { background: var(--color-surface-focus); }
+.monthnav .lbl { min-width: 132px; color: var(--color-primary-strong); font-size: 13px; font-weight: 600; text-align: center; text-transform: capitalize; }
+nav.tabs { display: flex; max-width: 1180px; margin: 0 auto; padding: 0 20px; gap: 2px; }
+nav.tabs a { padding: 13px 18px; border-bottom: 2.5px solid transparent; color: var(--color-text-muted); font-size: 14px; font-weight: 600; text-decoration: none; transition: .15s; }
+nav.tabs a:hover { color: var(--color-primary-strong); }
+nav.tabs a[aria-current="page"] { border-color: var(--color-primary); color: var(--color-primary); }
+main { max-width: 1180px; margin: 0 auto; padding: 22px 20px 60px; animation: fade .25s ease; }
+.loading { padding: 40px 0; color: var(--color-text-muted); text-align: center; }
+.fatal-error { max-width: 720px; margin: 30px auto; }
+.fatal-error h1 { margin-top: 0; font-size: 20px; }
+@keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (max-width: 700px) {
+  .bar { gap: 10px; }
+  .spacer { display: none; }
+  .seg { order: 3; width: 100%; }
+  .seg button { flex: 1; text-align: center; }
+  nav.tabs { overflow-x: auto; }
+  nav.tabs a { white-space: nowrap; }
+}
+
+/* ===== components.css ===== */
+.tnum { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.grid { display: grid; gap: 16px; }
+.kpis { grid-template-columns: repeat(4, 1fr); }
+.card { border: 1px solid var(--color-border); border-radius: var(--radius-card); background: var(--color-surface); box-shadow: var(--shadow-card); }
+.cbody { padding: 18px; }
+.cbody h3 { margin: 0 0 2px; font-size: 15px; }
+.hint { margin: 0 0 14px; color: var(--color-text-muted); font-size: 12px; }
+.hint-topless { margin-top: 0; }
+.kpi { padding: 16px 18px; }
+.kpi .k-label { color: var(--color-text-muted); font-size: 12px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; }
+.kpi .k-val { margin-top: 6px; font-size: 26px; font-weight: 700; }
+.kpi .k-sub { margin-top: 3px; color: var(--color-text-muted); font-size: 12px; }
+/* Crédito e débito compartilham a mesma família de azul: são o mesmo dinheiro
+   saindo, só que por caminhos diferentes. */
+.kpi-split { --method-credito: var(--color-primary); --method-debito: var(--color-primary-strong); }
+.kpi-split .splitbar { display: flex; height: 7px; margin-top: 10px; border-radius: 999px; background: var(--color-border-row); overflow: hidden; }
+.kpi-split .splitbar .seg { width: var(--seg-width, 0%); transition: width .4s ease; }
+.kpi-split .splitbar .seg.credito { background: var(--method-credito); }
+.kpi-split .splitbar .seg.debito { background: var(--method-debito); }
+.kpi-split .splitbar .seg.empty { width: 100%; background: var(--color-border-row); }
+.kpi-split .splitrows { display: flex; flex-direction: column; margin-top: 8px; gap: 3px; }
+.kpi-split .srow { display: flex; align-items: center; gap: 7px; font-size: 12.5px; }
+.kpi-split .srow .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.kpi-split .srow .dot.credito { background: var(--method-credito); }
+.kpi-split .srow .dot.debito { background: var(--method-debito); }
+.kpi-split .srow .nm { flex: 1; color: var(--color-text-muted); }
+.kpi-split .srow .vl { font-weight: 600; }
+.kpi-split .srow .pc { width: 34px; color: var(--color-text-subtle); text-align: right; }
+
+.tag.method.credito { background: var(--color-surface-soft); color: var(--color-primary); }
+.tag.method.debito { background: var(--color-primary); color: #fff; }
+
+.pill { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+.pill.good { background: var(--color-success-surface); color: var(--color-success); }
+.pill.warn { background: var(--color-warning-surface); color: var(--color-warning); }
+.pill.bad { background: var(--color-danger-surface); color: var(--color-danger); }
+.sec-title { margin: 26px 2px 12px; color: var(--color-text-muted); font-size: 13px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; }
+.empty { padding: 26px 10px; color: var(--color-text-subtle); font-size: 13px; text-align: center; }
+.muted { color: var(--color-text-muted); }
+.right { text-align: right; }
+.inline { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.flex-title { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+.flex-title-start { align-items: flex-start; }
+.flex-title h3 { margin: 0; }
+.scroll-x { overflow-x: auto; }
+.mt-12 { margin-top: 12px; }
+.mt-14 { margin-top: 14px; }
+.mt-16 { margin-top: 16px; }
+.hidden-input { display: none; }
+label.fld { display: flex; flex-direction: column; gap: 5px; color: var(--color-text-muted); font-size: 12px; font-weight: 600; }
+input, select { padding: 9px 10px; border: 1px solid var(--color-border); border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-text); font: inherit; }
+input:focus, select:focus { border-color: var(--color-primary); outline: 2px solid var(--color-focus-ring); }
+.btn { all: unset; padding: 10px 16px; border-radius: var(--radius-control); background: var(--color-primary); color: var(--color-surface); cursor: pointer; font-size: 13.5px; font-weight: 700; text-align: center; transition: .15s; }
+.btn:hover { background: var(--color-primary-hover); }
+.btn.ghost { border: 1px solid var(--color-border); background: transparent; color: var(--color-primary-strong); }
+.btn.ghost:hover { background: var(--color-surface-soft); }
+.btn.danger { border: 1px solid var(--color-danger-border); background: transparent; color: var(--color-danger); }
+.btn.danger:hover { background: var(--color-danger-surface); }
+.btn.compact { padding: 6px 11px; }
+.btn[disabled] { cursor: default; opacity: .45; }
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+th { padding: 10px 12px; border-bottom: 1px solid var(--color-border); color: var(--color-text-muted); font-size: 11.5px; letter-spacing: .5px; text-align: left; text-transform: uppercase; }
+td { padding: 10px 12px; border-bottom: 1px solid var(--color-border-row); }
+tr:hover td { background: var(--color-surface-hover); }
+tfoot td { border-top: 1px solid var(--color-border); border-bottom: 0; background: var(--color-surface-muted); font-size: 12.5px; }
+.tag { padding: 2px 8px; border-radius: 999px; background: var(--color-background); color: var(--color-primary-strong); font-size: 11px; font-weight: 600; }
+.tsel { max-width: 160px; padding: 5px 7px; border-radius: 8px; font-size: 12.5px; }
+.tsel.pend { border-color: var(--color-warning); background: var(--color-warning-field); color: var(--color-warning-text); font-weight: 600; }
+.tin { width: 100%; padding: 6px 8px; border-radius: 8px; font-size: 12.5px; }
+.tin.amount { width: 92px; text-align: right; }
+.cdot, .sw { background: var(--item-color, var(--color-chart-empty)); }
+.cdot { display: inline-block; width: 9px; height: 9px; margin-right: 7px; border-radius: 50%; vertical-align: middle; }
+.xbtn { all: unset; padding: 4px 7px; border-radius: 7px; color: var(--color-text-subtle); cursor: pointer; font-weight: 700; }
+.xbtn:hover { background: var(--color-danger-surface); color: var(--color-danger); }
+.actions { white-space: nowrap; }
+.who { padding: 2px 7px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+.who.tone-1 { background: var(--color-user-1-surface); color: var(--color-user-1-text); }
+.who.tone-2 { background: var(--color-user-2-surface); color: var(--color-user-2-text); }
+.who.tone-3 { background: var(--color-user-3-surface); color: var(--color-user-3-text); }
+.who.tone-4 { background: var(--color-user-4-surface); color: var(--color-user-4-text); }
+.toast { position: fixed; bottom: 22px; left: 50%; z-index: 10; padding: 11px 18px; border-radius: 11px; background: var(--color-brand-darker); box-shadow: 0 8px 30px var(--color-toast-shadow); color: var(--color-surface); font-size: 13.5px; font-weight: 600; opacity: 0; pointer-events: none; transform: translateX(-50%) translateY(20px); transition: .28s; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+@media (max-width: 820px) { .kpis { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .kpis { grid-template-columns: 1fr; } }
+
+/* ===== pages/dashboard.css ===== */
+.alerts { display: flex; flex-direction: column; gap: 8px; }
+.alert { display: flex; padding: 11px 13px; border: 1px solid; border-radius: 11px; align-items: flex-start; gap: 11px; }
+.alert.good { border-color: var(--color-success-border); background: var(--color-success-surface); }
+.alert.warn { border-color: var(--color-warning-border); background: var(--color-warning-surface); }
+.alert.bad { border-color: var(--color-danger-border); background: var(--color-danger-surface); }
+.alert .dot { width: 9px; height: 9px; margin-top: 5px; border-radius: 50%; flex: none; }
+.alert.good .dot { background: var(--color-success); }
+.alert.warn .dot { background: var(--color-warning); }
+.alert.bad .dot { background: var(--color-danger); }
+.alert b { font-size: 13.5px; }
+.alert span { display: block; color: var(--color-text-muted); font-size: 12.5px; }
+.two { grid-template-columns: 1.05fr 1.35fr; }
+.donutwrap { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.legend { display: flex; min-width: 180px; flex: 1; flex-direction: column; gap: 7px; }
+.legend .row { display: flex; align-items: center; gap: 9px; font-size: 13px; }
+.legend .sw { width: 11px; height: 11px; border-radius: 3px; flex: none; }
+.legend .nm { flex: 1; color: var(--color-text); }
+.legend .pc { width: 44px; color: var(--color-text-muted); text-align: right; }
+.meters { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 26px; }
+.meter .top { display: flex; margin-bottom: 6px; align-items: baseline; justify-content: space-between; }
+.meter .nm { font-size: 13.5px; font-weight: 600; }
+.meter .fig { color: var(--color-text-muted); font-size: 12.5px; }
+.track { position: relative; height: 9px; border-radius: 6px; background: var(--color-chart-track); overflow: hidden; }
+.fill { width: var(--meter-width, 0%); height: 100%; border-radius: 6px; background: var(--meter-color, var(--color-primary)); transition: width .4s ease; }
+/* Parte do limite já reservada para cobrir o estouro de outra categoria: não foi
+   gasta, então não usa a cor de gasto — fica hachurada, entre o cheio e o vazio. */
+.meter .track .committed { position: absolute; top: 0; right: 0; bottom: 0; width: var(--committed-width, 0%); background: repeating-linear-gradient(45deg, var(--color-chart-rule) 0 3px, var(--color-chart-empty) 3px 6px); transition: width .4s ease; }
+.commit-note { display: flex; margin-top: 14px; align-items: center; gap: 8px; line-height: 1.45; }
+.commit-note .swatch { width: 22px; height: 9px; border-radius: 6px; flex: none; background: repeating-linear-gradient(45deg, var(--color-chart-rule) 0 3px, var(--color-chart-empty) 3px 6px); }
+.meter .pct { display: inline-block; margin-top: 4px; color: var(--meter-color, var(--color-primary)); font-size: 11.5px; font-weight: 700; }
+.bars { position: relative; display: flex; height: 180px; padding: 6px 4px 0; align-items: flex-end; gap: 12px; }
+.bars.short { height: 120px; }
+.bcol { display: flex; height: 100%; flex: 1; flex-direction: column; align-items: center; gap: 7px; }
+.bwrap { display: flex; width: 100%; flex: 1; align-items: flex-end; justify-content: center; }
+.bcol .b { position: relative; width: 70%; max-width: 46px; min-height: 2px; height: var(--bar-height, 2%); border-radius: 7px 7px 3px 3px; background: var(--chart-gradient); transition: height .4s ease; }
+.bcol .b.cur { background: var(--chart-current-gradient); }
+.bcol .b.forecast { border: 2px dashed var(--color-text-muted); background: var(--color-forecast); }
+.bcol .b.st-good { background: var(--chart-success-gradient); }
+.bcol .b.st-warn { background: var(--chart-warning-gradient); }
+.bcol .b.st-bad { background: var(--chart-danger-gradient); }
+.bcol .b .dseg { position: absolute; right: 0; bottom: 0; left: 0; height: var(--seg-height, 0%); border-radius: 0 0 3px 3px; background: rgba(2, 62, 125, .45); }
+.bcol .b .v { position: absolute; top: -18px; left: 50%; color: var(--color-text-muted); font-family: var(--font-mono); font-size: 10.5px; white-space: nowrap; transform: translateX(-50%); }
+.bcol .b .v.over { color: var(--color-danger); font-weight: 700; }
+.bcol .m { color: var(--color-text-muted); font-size: 11px; text-transform: capitalize; }
+.bcol.now .m { color: var(--color-text); font-weight: 700; }
+.capover { position: absolute; z-index: 2; inset: 6px 4px 0; display: flex; flex-direction: column; gap: 7px; pointer-events: none; }
+.capover .capzone { position: relative; flex: 1; }
+.capover .mspace { font-size: 11px; visibility: hidden; }
+.caprule { position: absolute; right: 0; bottom: var(--cap-position, 0%); left: 0; border-top: 2px dashed var(--color-chart-rule); }
+.caprule .lbl { position: absolute; top: -16px; right: 0; padding: 0 5px; border-radius: 5px; background: var(--color-surface); color: var(--color-text-muted); font-family: var(--font-mono); font-size: 10.5px; white-space: nowrap; }
+.acc-grid { grid-template-columns: repeat(var(--column-count, 1), minmax(0, 1fr)); }
+.acc-header { display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap; }
+.acc-header h3 { margin: 0; }
+.acc-value { margin: 10px 0 14px; font-size: 28px; font-weight: 700; }
+.forecast-note { margin-top: 6px; font-size: 10.5px; }
+@media (max-width: 900px) { .two { grid-template-columns: 1fr; } }
+@media (max-width: 720px) { .meters, .acc-grid { grid-template-columns: 1fr; } }
+
+/* ===== pages/lancamentos.css ===== */
+.formrow { display: grid; grid-template-columns: 120px 1.2fr 1.6fr 120px 90px 100px auto; align-items: end; gap: 10px; }
+.filterbar { display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.filterbar .fld { min-width: 150px; }
+.filterbar .btn { padding: 9px 14px; }
+.filterbar .fcount { margin-left: auto; padding-bottom: 9px; color: var(--color-text-muted); font-size: 12px; white-space: nowrap; }
+th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
+th.sortable:hover { background: var(--color-surface-soft); color: var(--color-primary-strong); }
+th.sortable.on { color: var(--color-primary-strong); }
+th.sortable .arw { margin-left: 5px; font-size: 9.5px; opacity: .35; }
+th.sortable.on .arw { color: var(--color-primary); opacity: 1; }
+.summary { display: flex; gap: 26px; flex-wrap: wrap; }
+.summary .s { display: flex; flex-direction: column; }
+.summary .s b { font-size: 20px; }
+.summary .s span { color: var(--color-text-muted); font-size: 12px; }
+.summary .pending { color: var(--color-warning); }
+.summary .resolved { color: var(--color-success); }
+.import-user { min-width: 130px; }
+.import-day { min-width: 150px; }
+@media (max-width: 900px) { .formrow { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .formrow { grid-template-columns: 1fr; } }
+
+/* ===== pages/recorrentes.css ===== */
+.ruleform { display: grid; margin-top: 14px; grid-template-columns: repeat(6, minmax(0, 1fr)); align-items: end; gap: 10px; }
+.ruleform .wide { grid-column: span 2; }
+.ruleform label.fld input, .ruleform label.fld select { width: 100%; min-width: 0; }
+.ruleform .btn { align-self: end; padding: 10px 12px; white-space: normal; }
+@media (max-width: 1100px) { .ruleform { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 700px) { .ruleform { grid-template-columns: 1fr; } .ruleform .wide { grid-column: span 1; } }
+
+/* ===== pages/configuracoes.css ===== */
+.cfg-cats th:nth-child(n+3), .cfg-cats td:nth-child(n+3) { text-align: right; }
+.cfg-cats input[type="number"] { width: 96px; text-align: right; }
+.cfg-cats input[type="text"] { width: 100%; }
+.cfg-cats input[type="color"] { width: 38px; height: 32px; padding: 2px; border-radius: 8px; }
+.cfg-cats .pctcalc { font-weight: 700; }
+.cfg-cats .pctcalc.good { color: var(--color-success); }
+.cfg-cats .pctcalc.warn { color: var(--color-warning); }
+.cfg-cats .pctcalc.bad { color: var(--color-danger); }
+.budget-summary { display: grid; border-top: 1px solid var(--color-border); background: var(--color-surface-muted); grid-template-columns: repeat(var(--column-count, 1), minmax(0, 1fr)); gap: 12px; }
+.budget-summary .sbox { padding: 12px 14px; border: 1px solid var(--color-border); border-radius: 12px; background: var(--color-surface); }
+.budget-summary .lbl { color: var(--color-text-muted); font-size: 11.5px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; }
+.budget-summary .val { margin-top: 4px; font-size: 20px; font-weight: 800; }
+.budget-summary .sub { margin-top: 2px; color: var(--color-text-muted); font-size: 12px; }
+.cfgblock { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+.status { color: var(--color-text-muted); font-size: 12.5px; }
+.status b { color: var(--color-primary-strong); }
+@media (max-width: 820px) { .budget-summary, .cfgblock { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body data-page="dashboard">
+<header class="app" id="app-header"></header>
+<nav class="tabs" id="app-navigation" aria-label="Navegação principal"></nav>
+<main id="page-content"><p class="loading" role="status">Carregando…</p></main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<noscript><p class="loading">Este arquivo precisa de JavaScript ativado.</p></noscript>
+
+<script>
+/* Arquivo gerado por scripts/build-standalone.py — não edite à mão.
+   Edite os módulos em assets/js/ e gere de novo. */
+(function () {
+  "use strict";
+
+  // Se este for o modelo cru (nunca passou pelo build), o marcador abaixo continua
+  // literal e não há módulo nenhum registrado. Avisa em vez de estourar no console.
+  if (document.body.dataset.template === "1") {
+    document.getElementById("page-content").innerHTML =
+      '<div class="card cbody fatal-error"><h1>Este é o modelo do build, não o aplicativo</h1>' +
+      "<p>Ele não funciona sozinho: o build substitui marcadores dentro dele pelos módulos e pela base.</p>" +
+      "<p>Abra <code>cofre-standalone.html</code> (ou <code>cofre-standalone-PRIVADO.html</code>). " +
+      "Se ainda não existirem, gere com <code>py scripts/build-standalone.py</code>.</p></div>";
+    return;
+  }
+
+  // ---- registro de módulos (substitui os módulos ES, que não carregam por file://)
+  var __fabricas = {};
+  var __cache = {};
+  function __define(id, fabrica) { __fabricas[id] = fabrica; }
+  function __require(id) {
+    if (__cache[id]) return __cache[id];
+    var fabrica = __fabricas[id];
+    if (!fabrica) throw new Error("módulo não encontrado: " + id);
+    var exports = {};
+    __cache[id] = exports;
+    fabrica(exports, __require);
+    return exports;
+  }
+
+  // ---- base embutida, no lugar do JSON em data/
+  var BASE = {"version": 2, "names": {"user-1": "Usuário 1", "user-2": "Usuário 2"}, "income": {"user-1": 0, "user-2": 0}, "monthlyCap": {"user-1": 0, "user-2": 0}, "cardClosingDay": 30, "thresholds": {"warn": 0.8, "over": 1}, "categories": [{"id": "category-example", "name": "Categoria de exemplo", "color": "#0466c8", "limits": {"user-1": 0, "user-2": 0}, "cumulative": false, "defaultTransactionType": "S"}], "transactions": [], "recurring": [], "categoryRules": [], "importSettings": {"providerLabel": "CSV da fatura"}};
+  var PAGINAS = ["dashboard", "lancamentos", "recorrentes", "configuracoes"];
+
+  // data-service.js busca a base com fetch(). Aqui não há rede nem arquivo ao
+  // lado: devolvemos a cópia embutida e deixamos o resto do código intacto.
+  var fetchOriginal = window.fetch;
+  window.fetch = function (recurso) {
+    var alvo = String((recurso && recurso.href) || recurso || "");
+    if (/cofre-orcamento(\.example)?\.json$/.test(alvo)) {
+      return Promise.resolve({
+        ok: true,
+        status: 200,
+        json: function () { return Promise.resolve(JSON.parse(JSON.stringify(BASE))); },
+      });
+    }
+    if (fetchOriginal) return fetchOriginal.apply(window, arguments);
+    return Promise.reject(new Error("sem rede no modo arquivo único: " + alvo));
+  };
+
+__define("components/charts.js", function (__exports, __require) {
+  const { escapeHtml, safeColor } = __require("utils.js");
+
+  function donut(items, total) {
+    const size = 190;
+    const center = 95;
+    const radius = 72;
+    const strokeWidth = 30;
+    const circumference = 2 * Math.PI * radius;
+    if (!total) {
+      return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" role="img" aria-label="Sem gastos"><circle cx="${center}" cy="${center}" r="${radius}" fill="none" stroke="var(--color-border-row)" stroke-width="${strokeWidth}"/><text x="${center}" y="${center}" text-anchor="middle" dominant-baseline="middle" font-size="12" fill="var(--color-text-subtle)">sem gastos</text></svg>`;
+    }
+    let offset = 0;
+    let rings = "";
+    items.forEach(item => {
+      const length = item.spent / total * circumference;
+      if (length <= .05) return;
+      rings += `<circle cx="${center}" cy="${center}" r="${radius}" fill="none" stroke="${safeColor(item.color)}" stroke-width="${strokeWidth}" stroke-dasharray="${length.toFixed(3)} ${(circumference - length).toFixed(3)}" stroke-dashoffset="${(-offset).toFixed(3)}" transform="rotate(-90 ${center} ${center})"><title>${escapeHtml(item.name)}: ${(item.spent / total * 100).toFixed(1)}%</title></circle>`;
+      offset += length;
+    });
+    const top = items[0];
+    const topPercentage = (top.spent / total * 100).toFixed(0);
+    const name = top.name.length > 16 ? `${top.name.slice(0, 15)}…` : top.name;
+    return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" role="img" aria-label="Distribuição dos gastos por categoria">${rings}<text x="${center}" y="${center - 3}" text-anchor="middle" font-size="24" font-weight="700" fill="var(--color-text)">${topPercentage}%</text><text x="${center}" y="${center + 15}" text-anchor="middle" font-size="10.5" fill="var(--color-text-subtle)">${escapeHtml(name)}</text></svg>`;
+  }
+
+  __exports.donut = donut;
+});
+
+__define("components/ui.js", function (__exports, __require) {
+  const { escapeHtml } = __require("utils.js");
+
+  function kpi(label, value, sublabel = "") {
+    return `<div class="card kpi"><div class="k-label">${escapeHtml(label)}</div><div class="k-val tnum">${escapeHtml(value)}</div><div class="k-sub">${escapeHtml(sublabel)}</div></div>`;
+  }
+
+  function kpiPill(label, value, status, sublabel = "") {
+    const statusText = { good: "saudável", warn: "atenção", bad: "acima" }[status] || "";
+    return `<div class="card kpi"><div class="k-label">${escapeHtml(label)}</div><div class="k-val tnum">${escapeHtml(value)} <span class="pill ${status}">${statusText}</span></div><div class="k-sub">${escapeHtml(sublabel)}</div></div>`;
+  }
+
+  // Cartão de KPI que abre a composição do total. `parts` recebe
+  // { id, label, value, formatted } — o id vira a classe de cor da faixa.
+  function kpiSplit(label, total, parts, sublabel = "") {
+    const sum = parts.reduce((accumulated, part) => accumulated + part.value, 0);
+    const share = part => (sum ? part.value / sum * 100 : 0);
+    const bar = sum
+      ? parts.map(part => `<span class="seg ${part.id}" style="--seg-width:${share(part).toFixed(2)}%"></span>`).join("")
+      : `<span class="seg empty"></span>`;
+    const rows = parts.map(part => `<div class="srow"><span class="dot ${part.id}"></span><span class="nm">${escapeHtml(part.label)}</span><span class="vl tnum">${escapeHtml(part.formatted)}</span><span class="pc tnum">${share(part).toFixed(0)}%</span></div>`).join("");
+    const sub = sublabel ? `<div class="k-sub">${escapeHtml(sublabel)}</div>` : "";
+    return `<div class="card kpi kpi-split"><div class="k-label">${escapeHtml(label)}</div><div class="k-val tnum">${escapeHtml(total)}</div><div class="splitbar">${bar}</div><div class="splitrows">${rows}</div>${sub}</div>`;
+  }
+
+  function alertCard(status, title, detail) {
+    return `<div class="alert ${status}"><span class="dot"></span><div><b>${escapeHtml(title)}</b><span>${escapeHtml(detail)}</span></div></div>`;
+  }
+
+  function userTone(database, userId) {
+    const index = Math.max(0, Object.keys(database.names).indexOf(userId));
+    return `tone-${(index % 4) + 1}`;
+  }
+
+  function createToast(element) {
+    return message => {
+      element.textContent = message;
+      element.classList.add("show");
+      clearTimeout(element._timer);
+      element._timer = setTimeout(() => element.classList.remove("show"), 2200);
+    };
+  }
+
+  __exports.kpi = kpi;
+  __exports.kpiPill = kpiPill;
+  __exports.kpiSplit = kpiSplit;
+  __exports.alertCard = alertCard;
+  __exports.userTone = userTone;
+  __exports.createToast = createToast;
+});
+
+__define("config.js", function (__exports, __require) {
+  const DATA_URLS = Object.freeze({
+    primary: new URL("../../data/cofre-orcamento.json", document.baseURI),
+    example: new URL("../../data/cofre-orcamento.example.json", document.baseURI),
+  });
+
+  const STORAGE_KEY = "cofre_orcamento_v1";
+  const UI_STATE_KEY = "cofre_orcamento_ui_v1";
+  const ALL_USERS_SCOPE = "__all__";
+  const DATABASE_FILENAME = "cofre-orcamento.json";
+  const FILE_HANDLE_DATABASE = "cofre_file_handles";
+  const FILE_HANDLE_STORE = "handles";
+
+  const ROUTES = Object.freeze([
+    { id: "dashboard", label: "Visão geral", href: "dashboard.html" },
+    { id: "lancamentos", label: "Lançamentos", href: "lancamentos.html" },
+    { id: "recorrentes", label: "Recorrente", href: "recorrentes.html" },
+    { id: "configuracoes", label: "Configurações", href: "configuracoes.html" },
+  ]);
+
+  // Forma de pagamento. Não confundir com `tipo` (M/S/F), que é a natureza do
+  // gasto — recorrente, avulso, parcelado.
+  const PAYMENT_METHODS = Object.freeze([
+    { id: "credito", label: "Crédito", short: "créd" },
+    { id: "debito", label: "Débito", short: "déb" },
+  ]);
+
+  const DEFAULT_PAYMENT_METHOD = "credito";
+
+  const CHART_COLOR_VARIABLES = Object.freeze([
+    "--color-chart-1", "--color-chart-2", "--color-chart-3", "--color-chart-4", "--color-chart-5",
+    "--color-chart-6", "--color-chart-7", "--color-chart-8", "--color-chart-9", "--color-chart-10",
+  ]);
+
+  __exports.DATA_URLS = DATA_URLS;
+  __exports.STORAGE_KEY = STORAGE_KEY;
+  __exports.UI_STATE_KEY = UI_STATE_KEY;
+  __exports.ALL_USERS_SCOPE = ALL_USERS_SCOPE;
+  __exports.DATABASE_FILENAME = DATABASE_FILENAME;
+  __exports.FILE_HANDLE_DATABASE = FILE_HANDLE_DATABASE;
+  __exports.FILE_HANDLE_STORE = FILE_HANDLE_STORE;
+  __exports.ROUTES = ROUTES;
+  __exports.PAYMENT_METHODS = PAYMENT_METHODS;
+  __exports.DEFAULT_PAYMENT_METHOD = DEFAULT_PAYMENT_METHOD;
+  __exports.CHART_COLOR_VARIABLES = CHART_COLOR_VARIABLES;
+});
+
+__define("data-service.js", function (__exports, __require) {
+  const { DATABASE_FILENAME, DATA_URLS, DEFAULT_PAYMENT_METHOD, FILE_HANDLE_DATABASE, FILE_HANDLE_STORE, STORAGE_KEY } = __require("config.js");
+  const { clone, todayISO, uid, yearMonth } = __require("utils.js");
+
+  let connectedFileHandle = null;
+  let saveTimer = null;
+
+  function requireObject(value, label) {
+    if (!value || typeof value !== "object" || Array.isArray(value)) {
+      throw new Error(`${label} deve ser um objeto.`);
+    }
+  }
+
+  function validateDatabase(database) {
+    requireObject(database, "A base");
+    requireObject(database.names, "names");
+    requireObject(database.income, "income");
+    requireObject(database.monthlyCap, "monthlyCap");
+    requireObject(database.thresholds, "thresholds");
+    if (!Object.keys(database.names).length) throw new Error("A base precisa ter pelo menos um usuário.");
+    if (!Array.isArray(database.categories)) throw new Error("categories deve ser uma lista.");
+    if (!Array.isArray(database.transactions)) throw new Error("transactions deve ser uma lista.");
+    if (!Array.isArray(database.recurring)) throw new Error("recurring deve ser uma lista.");
+    if (!Array.isArray(database.categoryRules)) throw new Error("categoryRules deve ser uma lista.");
+    database.categories.forEach((category, index) => {
+      requireObject(category, `categories[${index}]`);
+      requireObject(category.limits, `categories[${index}].limits`);
+      if (!category.id || typeof category.name !== "string") throw new Error(`Categoria inválida na posição ${index}.`);
+    });
+    database.transactions.forEach((transaction, index) => {
+      if (!transaction?.id || !transaction?.user || !/^\d{4}-\d{2}-\d{2}$/.test(transaction?.date || "")) {
+        throw new Error(`Lançamento inválido na posição ${index}.`);
+      }
+      if (!Number.isFinite(Number(transaction.amount))) throw new Error(`Valor inválido no lançamento ${index}.`);
+    });
+    return database;
+  }
+
+  function migrateDatabase(input) {
+    const database = clone(input || {});
+    database.version = Number(database.version) || 1;
+    database.names = database.names && typeof database.names === "object" ? database.names : {};
+    const userIds = Object.keys(database.names);
+    database.income = database.income && typeof database.income === "object" ? database.income : {};
+    database.monthlyCap = database.monthlyCap && typeof database.monthlyCap === "object" ? database.monthlyCap : {};
+    userIds.forEach(userId => {
+      database.income[userId] = Number(database.income[userId]) || 0;
+      database.monthlyCap[userId] = Number(database.monthlyCap[userId]) || 0;
+    });
+    database.cardClosingDay = Math.min(31, Math.max(1, Number(database.cardClosingDay) || 30));
+    database.thresholds = database.thresholds && typeof database.thresholds === "object"
+      ? database.thresholds
+      : {};
+    database.thresholds.warn = Number(database.thresholds.warn) || .8;
+    database.thresholds.over = Number(database.thresholds.over) || 1;
+    database.categories = Array.isArray(database.categories) ? database.categories : [];
+    database.transactions = Array.isArray(database.transactions) ? database.transactions : [];
+    database.recurring = Array.isArray(database.recurring) ? database.recurring : [];
+    database.categoryRules = Array.isArray(database.categoryRules) ? database.categoryRules : [];
+    database.importSettings = database.importSettings && typeof database.importSettings === "object"
+      ? database.importSettings
+      : { providerLabel: "CSV da fatura" };
+    database.categories.forEach(category => {
+      category.id ||= uid();
+      category.name = String(category.name || "");
+      category.color = String(category.color || "");
+      category.limits = category.limits && typeof category.limits === "object" ? category.limits : {};
+      userIds.forEach(userId => { category.limits[userId] = Number(category.limits[userId]) || 0; });
+      category.cumulative = category.cumulative === true;
+    });
+    // Antes da forma de pagamento existir, tudo que entrava vinha da fatura; só o
+    // extrato de conta grava `externalId`. A inferência mantém o histórico coerente.
+    database.transactions.forEach(transaction => {
+      if (transaction.method !== "credito" && transaction.method !== "debito") {
+        transaction.method = transaction.externalId ? "debito" : DEFAULT_PAYMENT_METHOD;
+      }
+    });
+    database.recurring.forEach(rule => {
+      rule.id ||= uid();
+      rule.kind ||= rule.tipo || "M";
+      if (rule.active === undefined) rule.active = true;
+      rule.day = Math.min(31, Math.max(1, Number(rule.day) || 1));
+      rule.start ||= yearMonth(todayISO());
+    });
+    return validateDatabase(database);
+  }
+
+  async function fetchJson(url) {
+    const response = await fetch(url, { cache: "no-store" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return response.json();
+  }
+
+  function loadCachedDatabase() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? migrateDatabase(JSON.parse(raw)) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  // O IndexedDB é um detalhe opcional (lembrar o arquivo conectado). Ele nunca pode
+  // segurar a inicialização: uma aba antiga com a base aberta dispara onblocked, e o
+  // modo privado de alguns navegadores não dispara evento nenhum.
+  function withTimeout(promise, milliseconds, fallback = null) {
+    return Promise.race([
+      promise,
+      new Promise(resolve => setTimeout(() => resolve(fallback), milliseconds)),
+    ]);
+  }
+
+  function openHandleDatabase() {
+    if (!globalThis.indexedDB) return Promise.resolve(null);
+    return withTimeout(new Promise((resolve, reject) => {
+      const request = indexedDB.open(FILE_HANDLE_DATABASE, 1);
+      request.onupgradeneeded = () => request.result.createObjectStore(FILE_HANDLE_STORE);
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+      request.onblocked = () => resolve(null);
+    }), 2000);
+  }
+
+  async function rememberFileHandle(handle) {
+    try {
+      const database = await openHandleDatabase();
+      if (!database) return;
+      await new Promise((resolve, reject) => {
+        const transaction = database.transaction(FILE_HANDLE_STORE, "readwrite");
+        transaction.objectStore(FILE_HANDLE_STORE).put(handle, "database");
+        transaction.oncomplete = resolve;
+        transaction.onerror = () => reject(transaction.error);
+      });
+      database.close();
+    } catch {
+      // O salvamento manual continua disponível sem IndexedDB.
+    }
+  }
+
+  async function restoreFileHandle() {
+    try {
+      const database = await openHandleDatabase();
+      if (!database) return;
+      const handle = await new Promise((resolve, reject) => {
+        const request = database.transaction(FILE_HANDLE_STORE).objectStore(FILE_HANDLE_STORE).get("database");
+        request.onsuccess = () => resolve(request.result || null);
+        request.onerror = () => reject(request.error);
+      });
+      database.close();
+      if (handle && await handle.queryPermission({ mode: "readwrite" }) === "granted") connectedFileHandle = handle;
+    } catch {
+      connectedFileHandle = null;
+    }
+  }
+
+  async function loadInitialDatabase() {
+    let seed;
+    let source = "primary";
+    let warning = "";
+    try {
+      seed = migrateDatabase(await fetchJson(DATA_URLS.primary));
+    } catch (primaryError) {
+      source = "example";
+      warning = "A base privada não foi encontrada; a estrutura de exemplo foi carregada.";
+      try {
+        seed = migrateDatabase(await fetchJson(DATA_URLS.example));
+      } catch (exampleError) {
+        throw new Error(`Não foi possível carregar a base privada nem a base de exemplo. ${exampleError.message}`);
+      }
+    }
+    const cached = loadCachedDatabase();
+    const database = cached || clone(seed);
+    if (!cached) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(database)); } catch { /* sem cache */ }
+    }
+   await withTimeout(restoreFileHandle(), 3000);
+    if (connectedFileHandle) {
+      try {
+        const file = await connectedFileHandle.getFile();
+        const diskDatabase = migrateDatabase(JSON.parse(await file.text()));
+        persistDatabase(diskDatabase);
+        return { database: diskDatabase, seed, source: "disk+fileHandle", warning: "" };
+      } catch {
+        // Se a permissão não for renovada de imediato, segue com o cache local
+      }
+    }
+    return { database, seed, source: cached ? `${source}+localStorage` : source, warning };
+  }
+
+  async function writeConnectedFile(database) {
+    if (!connectedFileHandle) return;
+    const writable = await connectedFileHandle.createWritable();
+    await writable.write(JSON.stringify(database, null, 2));
+    await writable.close();
+  }
+
+  function persistDatabase(database, onError = () => {}) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(database)); } catch { /* sem cache */ }
+    if (!connectedFileHandle) return;
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => writeConnectedFile(database).catch(onError), 600);
+  }
+
+  const supportsDirectFileSave = () => typeof window.showSaveFilePicker === "function";
+
+  async function connectDatabaseFile(database) {
+    if (!supportsDirectFileSave()) throw new Error("Seu navegador não oferece salvamento direto em arquivo.");
+    connectedFileHandle = await window.showSaveFilePicker({
+      suggestedName: DATABASE_FILENAME,
+      types: [{ description: "JSON", accept: { "application/json": [".json"] } }],
+    });
+    await rememberFileHandle(connectedFileHandle);
+    await writeConnectedFile(database);
+    return connectedFileHandle.name;
+  }
+
+  async function openDatabaseFile() {
+    if (typeof window.showOpenFilePicker !== "function") return null;
+    const [handle] = await window.showOpenFilePicker({
+      types: [{ description: "JSON", accept: { "application/json": [".json"] } }],
+    });
+    const file = await handle.getFile();
+    const database = migrateDatabase(JSON.parse(await file.text()));
+    connectedFileHandle = handle;
+    await rememberFileHandle(handle);
+    persistDatabase(database);
+    return database;
+  }
+
+  function exportDatabase(database) {
+    const blob = new Blob([JSON.stringify(database, null, 2)], { type: "application/json" });
+    const anchor = document.createElement("a");
+    anchor.href = URL.createObjectURL(blob);
+    anchor.download = DATABASE_FILENAME;
+    anchor.click();
+    setTimeout(() => URL.revokeObjectURL(anchor.href), 0);
+  }
+
+  async function importDatabaseFile(file) {
+    return migrateDatabase(JSON.parse(await file.text()));
+  }
+
+  function persistenceInfo(database) {
+    return {
+      transactionCount: database.transactions.length,
+      exampleCount: database.transactions.filter(transaction => transaction.example).length,
+      fileName: connectedFileHandle?.name || "",
+    };
+  }
+
+  __exports.validateDatabase = validateDatabase;
+  __exports.migrateDatabase = migrateDatabase;
+  __exports.loadInitialDatabase = loadInitialDatabase;
+  __exports.persistDatabase = persistDatabase;
+  __exports.connectDatabaseFile = connectDatabaseFile;
+  __exports.openDatabaseFile = openDatabaseFile;
+  __exports.exportDatabase = exportDatabase;
+  __exports.importDatabaseFile = importDatabaseFile;
+  __exports.persistenceInfo = persistenceInfo;
+  __exports.supportsDirectFileSave = supportsDirectFileSave;
+});
+
+__define("features/csv-import.js", function (__exports, __require) {
+  const { uid, yearMonth } = __require("utils.js");
+  const { ensureInstallmentRuleFromImport, parseInstallment } = __require("features/recurring.js");
+
+  function splitCsvLine(line, separator = ",") {
+    const cells = [];
+    let current = "";
+    let quoted = false;
+    for (let index = 0; index < line.length; index += 1) {
+      const character = line[index];
+      if (character === '"') {
+        if (quoted && line[index + 1] === '"') {
+          current += '"';
+          index += 1;
+        } else {
+          quoted = !quoted;
+        }
+      } else if (character === separator && !quoted) {
+        cells.push(current);
+        current = "";
+      } else {
+        current += character;
+      }
+    }
+    cells.push(current);
+    return cells;
+  }
+
+  function parseCsv(text) {
+    const entries = [];
+    text.replace(/\r/g, "").split("\n").forEach(line => {
+      if (!line.trim()) return;
+      const cells = splitCsvLine(line);
+      if (cells.length < 3) return;
+      const date = cells[0].trim();
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+      entries.push({ date, title: cells[1].trim(), amount: cells[2].trim() });
+    });
+    return entries;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Extrato de conta do Nubank (débito): "Data,Valor,Identificador,Descrição",
+  // data em DD/MM/AAAA, valor com sinal e ponto decimal. Nada a ver com o CSV da
+  // fatura, que traz data ISO, título e valor sempre positivo.
+  // ---------------------------------------------------------------------------
+
+  const NUBANK_HEADER = /^﻿?"?Data"?\s*,\s*"?Valor"?\s*,\s*"?Identificador"?/i;
+
+  // Linhas que não são consumo. O pagamento de fatura repetiria tudo que já entra
+  // pelo CSV do cartão; o movimento de saldo compartilhado é acerto entre contas.
+  // O "de" é opcional: Nubank escreve "Pagamento de fatura", Inter "Pagamento Fatura - NOME".
+  const NOT_SPENDING = [
+    /pagamento\s+(?:de\s+)?fatura/i,
+    /transa[çc][ãa]o\s+compartilhada/i,
+  ];
+
+  // Aporte sai da conta (negativo) e entra na reserva; resgate volta para a conta
+  // (positivo) e no app vira retirada — lançamento negativo na mesma categoria.
+  const RDB_APPLICATION = /^aplica[çc][ãa]o\s+rdb/i;
+  const RDB_REDEMPTION = /^resgate\s+rdb/i;
+
+  function isNubankStatement(text) {
+    const firstLine = String(text || "").split("\n").find(line => line.trim());
+    return Boolean(firstLine && NUBANK_HEADER.test(firstLine.trim()));
+  }
+
+  function parseNubankCsv(text) {
+    const entries = [];
+    String(text).replace(/^﻿/, "").replace(/\r/g, "").split("\n").forEach(line => {
+      if (!line.trim()) return;
+      const cells = splitCsvLine(line);
+      if (cells.length < 4) return;
+      const parts = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(cells[0].trim());
+      if (!parts) return;
+      const [, day, month, year] = parts;
+      entries.push({
+        date: `${year}-${month}-${day}`,
+        amount: parseSignedAmount(cells[1]),
+        externalId: cells[2].trim(),
+        title: cells[3].trim(),
+      });
+    });
+    return entries;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Extrato de conta do Inter: separador ";", cinco linhas de preâmbulo antes do
+  // cabeçalho, valor em pt-BR ("-1.600,00") e o texto dividido em duas colunas —
+  // Histórico (natureza da operação) e Descrição (a contraparte). Não há
+  // identificador, então a deduplicação cai na heurística de data + texto + valor.
+  // ---------------------------------------------------------------------------
+
+  const INTER_HEADER = /^\s*Data\s+Lan[çc]amento\s*;/i;
+
+  function isInterStatement(text) {
+    return String(text || "").split("\n").some(line => INTER_HEADER.test(line));
+  }
+
+  function parseInterCsv(text) {
+    const entries = [];
+    String(text).replace(/^﻿/, "").replace(/\r/g, "").split("\n").forEach(line => {
+      if (!line.trim()) return;
+      const cells = splitCsvLine(line, ";");
+      if (cells.length < 4) return;
+      const parts = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(cells[0].trim());
+      if (!parts) return;
+      const [, day, month, year] = parts;
+      const history = cells[1].trim();
+      const description = cells[2].trim();
+      entries.push({
+        date: `${year}-${month}-${day}`,
+        amount: parseAmount(cells[3]),
+        externalId: "",
+        title: description || history,
+        // O tipo da operação mora na outra coluna; sem ele "Pagamento Fatura"
+        // perderia contexto na hora de decidir o que ignorar.
+        context: `${history} ${description}`.trim(),
+      });
+    });
+    return entries;
+  }
+
+  function parseSignedAmount(value) {
+    const raw = String(value).trim();
+    return /^-?\d+(\.\d+)?$/.test(raw) ? Number(raw) : parseAmount(raw);
+  }
+
+  function cleanStatementDescription(description) {
+    let text = String(description || "").trim();
+    text = text.replace(/^compra\s+no\s+d[ée]bito\s*-\s*/i, "");
+    text = text.replace(/^transfer[êe]ncia\s+(?:enviada|recebida)[^-]*-\s*/i, "");
+    text = text.replace(/^(?:pagamento|d[ée]bito|cr[ée]dito)\s+[^-]*-\s*/i, "");
+    // Remove CPF/CNPJ e tudo que vem depois: banco, agência e conta.
+    text = text.replace(/\s*-\s*(?:CPF|CNPJ)?\s*[•\d][•\d.\/-]{5,}.*$/i, "");
+    // Código numérico do estabelecimento, como "6050 - GRSA VOLVO".
+    text = text.replace(/^\d{3,6}\s*-\s*/, "");
+    text = text.replace(/\s*\([^)]*\)\s*$/, "");
+    return text.replace(/\s+/g, " ").replace(/^-+|-+$/g, "").trim();
+  }
+
+  function emergencyFundCategory(database) {
+    return database.categories.find(category => /reserva/i.test(category.name))
+      || database.categories.find(category => category.cumulative)
+      || null;
+  }
+
+  function parseAmount(value) {
+    let normalized = String(value).replace(/\s/g, "").replace(/R\$/i, "");
+    const negative = normalized.includes("-");
+    normalized = normalized.replace(/-/g, "").replace(/\./g, "").replace(",", ".");
+    const amount = parseFloat(normalized);
+    return Number.isNaN(amount) ? 0 : negative ? -amount : amount;
+  }
+
+  function invoiceDateByClosing(date, closingDay) {
+    const parts = date.split("-").map(Number);
+    let [year, month, day] = parts;
+    const closing = Math.min(31, Math.max(1, parseInt(closingDay, 10) || 31));
+    if (day >= closing) {
+      month += 1;
+      if (month > 12) { month = 1; year += 1; }
+    }
+    const lastDay = new Date(year, month, 0).getDate();
+    day = Math.min(day, lastDay);
+    return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+  }
+
+  function categoryForTitle(database, title) {
+    for (const rule of database.categoryRules) {
+      try {
+        if (!new RegExp(rule.pattern, rule.flags || "i").test(title)) continue;
+        const category = database.categories.find(item => item.id === rule.category || item.name === rule.category);
+        // Regra que casa mas aponta para categoria inexistente (nome renomeado ou
+        // com acento corrompido) não pode engolir o lançamento: segue para a próxima.
+        if (category) return category.id;
+      } catch {
+        // Uma regra inválida é ignorada sem interromper a importação.
+      }
+    }
+    return "";
+  }
+
+  function readText(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsText(file);
+    });
+  }
+
+  function importStatementRows(rows, { database, userId, stats }) {
+    // A reserva é o único destino em que uma entrada vira lançamento; sem ela
+    // configurada, resgate volta a ser apenas uma entrada ignorada.
+    const reserveCategory = emergencyFundCategory(database);
+
+    rows.forEach(row => {
+      // O Inter separa natureza e contraparte em colunas distintas; classificar
+      // pelo texto completo evita perder o "Pagamento Fatura" que mora só numa delas.
+      const context = row.context || row.title;
+      const isRedemption = row.amount > 0 && Boolean(reserveCategory) && RDB_REDEMPTION.test(context);
+      // Demais entradas (salário, reembolso, transferência recebida) não viram
+      // lançamento: o app modela apenas o que sai.
+      if (!(row.amount < 0) && !isRedemption) { stats.skipped += 1; return; }
+      if (NOT_SPENDING.some(padrao => padrao.test(context))) { stats.ignored += 1; return; }
+
+      const signed = isRedemption ? -row.amount : Math.abs(row.amount);
+      const amount = Math.round(signed * 100) / 100;
+      const description = cleanStatementDescription(row.title) || row.title.trim();
+
+      // O identificador do Nubank se repete entre as duas pernas de uma mesma
+      // operação, então o valor entra na chave junto.
+      const duplicate = database.transactions.some(transaction => transaction.user === userId
+        && (transaction.externalId
+          ? transaction.externalId === row.externalId && Math.abs(Number(transaction.amount) - amount) < .005
+          : transaction.date === row.date
+            && String(transaction.desc || "").trim() === description
+            && Math.abs(Number(transaction.amount) - amount) < .005));
+      if (duplicate) { stats.duplicate += 1; return; }
+
+      const reserve = isRedemption || RDB_APPLICATION.test(context) ? reserveCategory : null;
+      const categoryId = reserve ? reserve.id : categoryForTitle(database, description);
+      const category = database.categories.find(item => item.id === categoryId);
+
+      database.transactions.push({
+        id: uid(),
+        user: userId,
+        date: row.date,
+        cat: categoryId,
+        desc: description,
+        amount,
+        tipo: category?.defaultTransactionType || "S",
+        method: "debito",
+        imported: true,
+        externalId: row.externalId || undefined,
+      });
+      stats.added += 1;
+      if (isRedemption) stats.withdrawals += 1;
+      if (!categoryId) stats.pending += 1;
+      if (row.date > stats.maxDate) stats.maxDate = row.date;
+    });
+  }
+
+  async function importCsvFiles(files, { database, userId, closingDay }) {
+    const validClosingDay = Math.min(31, Math.max(1, parseInt(closingDay, 10) || 31));
+    database.cardClosingDay = validClosingDay;
+    const stats = { added: 0, pending: 0, duplicate: 0, skipped: 0, ignored: 0, withdrawals: 0, installments: 0, statements: 0, maxDate: "", closingDay: validClosingDay };
+    await Promise.all([...files].map(async file => {
+      const text = await readText(file);
+      if (isInterStatement(text)) {
+        stats.statements += 1;
+        importStatementRows(parseInterCsv(text), { database, userId, stats });
+        return;
+      }
+      if (isNubankStatement(text)) {
+        stats.statements += 1;
+        importStatementRows(parseNubankCsv(text), { database, userId, stats });
+        return;
+      }
+      parseCsv(text).forEach(row => {
+        const amount = parseAmount(row.amount);
+        if (!(amount > 0)) { stats.skipped += 1; return; }
+        const description = row.title.trim();
+        const invoiceDate = invoiceDateByClosing(row.date, validClosingDay);
+        const duplicate = database.transactions.some(transaction => transaction.user === userId
+          && (transaction.date === invoiceDate || yearMonth(transaction.date) === yearMonth(invoiceDate))
+          && String(transaction.desc || "").trim() === description
+          && Math.abs(Number(transaction.amount) - amount) < .005);
+        if (duplicate) { stats.duplicate += 1; return; }
+        const categoryId = categoryForTitle(database, description);
+        const installment = parseInstallment(description);
+        const category = database.categories.find(item => item.id === categoryId);
+        const type = installment ? "F" : category?.defaultTransactionType || "S";
+        const rule = installment
+          ? ensureInstallmentRuleFromImport(database, installment, invoiceDate, userId, categoryId, Math.round(amount * 100) / 100)
+          : null;
+        if (rule && installment.current < installment.total) stats.installments += 1;
+        database.transactions.push({
+          id: uid(),
+          user: userId,
+          date: invoiceDate,
+          purchaseDate: row.date,
+          cat: categoryId,
+          desc: description,
+          amount: Math.round(amount * 100) / 100,
+          tipo: type,
+          method: "credito",
+          imported: true,
+          recurringId: rule?.id,
+          recurringMonth: rule ? yearMonth(invoiceDate) : undefined,
+        });
+        stats.added += 1;
+        if (!categoryId) stats.pending += 1;
+        if (invoiceDate > stats.maxDate) stats.maxDate = invoiceDate;
+      });
+    }));
+    return stats;
+  }
+
+  __exports.splitCsvLine = splitCsvLine;
+  __exports.parseCsv = parseCsv;
+  __exports.isNubankStatement = isNubankStatement;
+  __exports.parseNubankCsv = parseNubankCsv;
+  __exports.isInterStatement = isInterStatement;
+  __exports.parseInterCsv = parseInterCsv;
+  __exports.cleanStatementDescription = cleanStatementDescription;
+  __exports.parseAmount = parseAmount;
+  __exports.invoiceDateByClosing = invoiceDateByClosing;
+  __exports.importCsvFiles = importCsvFiles;
+});
+
+__define("features/recurring.js", function (__exports, __require) {
+  const { monthLabel, shiftMonth, uid, yearMonth } = __require("utils.js");
+
+  const categoryExists = (database, categoryId) => database.categories.some(category => category.id === categoryId);
+  const categoryById = (database, categoryId) => database.categories.find(category => category.id === categoryId);
+
+  function lastDayOfMonth(yearMonthValue) {
+    const [year, month] = yearMonthValue.split("-").map(Number);
+    return new Date(year, month, 0).getDate();
+  }
+
+  function entryDateForMonth(yearMonthValue, day) {
+    const [year, month] = yearMonthValue.split("-").map(Number);
+    const validDay = Math.min(Math.max(parseInt(day, 10) || 1, 1), lastDayOfMonth(yearMonthValue));
+    return `${year}-${String(month).padStart(2, "0")}-${String(validDay).padStart(2, "0")}`;
+  }
+
+  function ruleDueInMonth(rule, yearMonthValue) {
+    if (!rule || rule.active === false) return false;
+    if (rule.start && yearMonthValue < rule.start) return false;
+    if (rule.end && yearMonthValue > rule.end) return false;
+    return true;
+  }
+
+  function generatedForRule(database, rule, yearMonthValue) {
+    return database.transactions.some(transaction => transaction.recurringId === rule.id && transaction.recurringMonth === yearMonthValue);
+  }
+
+  function monthDifference(from, to) {
+    const [fromYear, fromMonth] = from.split("-").map(Number);
+    const [toYear, toMonth] = to.split("-").map(Number);
+    return (toYear - fromYear) * 12 + (toMonth - fromMonth);
+  }
+
+  function cleanInstallmentBase(value) {
+    return String(value || "").replace(/\s*-\s*Parcela\s+\d+\s*\/\s*\d+\s*$/i, "").trim();
+  }
+
+  function parseInstallment(description) {
+    const value = String(description || "");
+    const match = value.match(/^(.*?)\s*-\s*Parcela\s+(\d+)\s*\/\s*(\d+)\s*$/i)
+      || value.match(/^(.*?)\s+Parcela\s+(\d+)\s*\/\s*(\d+)\s*$/i);
+    if (!match) return null;
+    const current = parseInt(match[2], 10);
+    const total = parseInt(match[3], 10);
+    if (!(current > 0 && total > 0 && current <= total)) return null;
+    return { base: (match[1] || "").trim(), current, total };
+  }
+
+  function normalizeText(value) {
+    return String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/\s+/g, " ").trim();
+  }
+
+  function descriptionForRuleMonth(rule, yearMonthValue) {
+    if (rule?.autoInstallment && rule.installmentTotal) {
+      const installment = (Number(rule.installmentStart) || 1) + Math.max(0, monthDifference(rule.start || yearMonthValue, yearMonthValue));
+      return `${rule.name} - Parcela ${installment}/${rule.installmentTotal}`;
+    }
+    return rule?.name || "";
+  }
+
+  function ensureInstallmentRuleFromImport(database, installment, invoiceDate, userId, categoryId, amount) {
+    if (!installment) return null;
+    const start = yearMonth(invoiceDate);
+    const end = shiftMonth(start, installment.total - installment.current);
+    const base = installment.base || cleanInstallmentBase("");
+    const existing = database.recurring.find(rule => rule.autoInstallment
+      && rule.user === userId
+      && normalizeText(rule.name) === normalizeText(base)
+      && Number(rule.installmentTotal) === installment.total
+      && Math.abs((Number(rule.amount) || 0) - amount) < .005);
+    if (existing) {
+      if (start < existing.start) {
+        existing.start = start;
+        existing.installmentStart = installment.current;
+        existing.day = Number(invoiceDate.slice(8, 10)) || existing.day;
+      }
+      if (end > existing.end) existing.end = end;
+      return existing;
+    }
+    if (installment.current >= installment.total) return null;
+    const rule = {
+      id: uid(),
+      active: true,
+      name: base,
+      cat: categoryId,
+      amount: Math.round(amount * 100) / 100,
+      kind: "F",
+      day: Number(invoiceDate.slice(8, 10)) || 1,
+      start,
+      end,
+      user: userId,
+      autoInstallment: true,
+      installmentStart: installment.current,
+      installmentTotal: installment.total,
+    };
+    database.recurring.push(rule);
+    return rule;
+  }
+
+  function ensureRecurringForMonth(database, yearMonthValue) {
+    let added = 0;
+    database.recurring.forEach(rule => {
+      if (!ruleDueInMonth(rule, yearMonthValue) || generatedForRule(database, rule, yearMonthValue)) return;
+      database.transactions.push({
+        id: uid(),
+        user: rule.user,
+        date: entryDateForMonth(yearMonthValue, rule.day),
+        cat: rule.cat,
+        desc: descriptionForRuleMonth(rule, yearMonthValue),
+        amount: Math.round((Number(rule.amount) || 0) * 100) / 100,
+        tipo: rule.kind,
+        recurringId: rule.id,
+        recurringMonth: yearMonthValue,
+        generated: true,
+      });
+      added += 1;
+    });
+    return added;
+  }
+
+  function syncGeneratedForRule(database, rule, yearMonthValue) {
+    if (!rule || !ruleDueInMonth(rule, yearMonthValue)) return;
+    const existing = database.transactions.find(transaction => transaction.recurringId === rule.id && transaction.recurringMonth === yearMonthValue);
+    if (existing) {
+      Object.assign(existing, {
+        user: rule.user,
+        date: entryDateForMonth(yearMonthValue, rule.day),
+        cat: rule.cat,
+        desc: descriptionForRuleMonth(rule, yearMonthValue),
+        amount: Math.round((Number(rule.amount) || 0) * 100) / 100,
+        tipo: rule.kind,
+      });
+    } else {
+      ensureRecurringForMonth(database, yearMonthValue);
+    }
+  }
+
+  function recurringPeriodLabel(rule, fallbackMonth) {
+    const from = monthLabel(rule.start || fallbackMonth);
+    const to = rule.end ? monthLabel(rule.end) : rule.kind === "M" ? "cancelar" : "—";
+    return `${from} até ${to}`;
+  }
+
+  __exports.lastDayOfMonth = lastDayOfMonth;
+  __exports.entryDateForMonth = entryDateForMonth;
+  __exports.ruleDueInMonth = ruleDueInMonth;
+  __exports.generatedForRule = generatedForRule;
+  __exports.monthDifference = monthDifference;
+  __exports.cleanInstallmentBase = cleanInstallmentBase;
+  __exports.parseInstallment = parseInstallment;
+  __exports.normalizeText = normalizeText;
+  __exports.descriptionForRuleMonth = descriptionForRuleMonth;
+  __exports.ensureInstallmentRuleFromImport = ensureInstallmentRuleFromImport;
+  __exports.ensureRecurringForMonth = ensureRecurringForMonth;
+  __exports.syncGeneratedForRule = syncGeneratedForRule;
+  __exports.recurringPeriodLabel = recurringPeriodLabel;
+  __exports.categoryExists = categoryExists;
+  __exports.categoryById = categoryById;
+});
+
+__define("navigation.js", function (__exports, __require) {
+  const { ALL_USERS_SCOPE, ROUTES } = __require("config.js");
+  const { escapeAttribute, escapeHtml, getUserIds, monthLabel, shiftMonth } = __require("utils.js");
+  const { getUiState, setUiState } = __require("state.js");
+
+  const walletIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><circle cx="16.5" cy="14.5" r="1.4" fill="currentColor" stroke="none"/></svg>`;
+
+  function createNavigation({ page, getDatabase, onContextChange }) {
+    const header = document.getElementById("app-header");
+    const navigation = document.getElementById("app-navigation");
+
+    function render() {
+      const database = getDatabase();
+      const state = getUiState();
+      const userIds = getUserIds(database);
+      const names = userIds.map(id => database.names[id] || id);
+      const scopeButtons = userIds.map(id => `
+        <button type="button" data-scope="${escapeAttribute(id)}" aria-pressed="${state.scope === id}">${escapeHtml(database.names[id] || id)}</button>
+      `).join("");
+      const combinedButton = userIds.length > 1
+        ? `<button type="button" data-scope="${ALL_USERS_SCOPE}" aria-pressed="${state.scope === ALL_USERS_SCOPE}">Combinado</button>`
+        : "";
+
+      header.innerHTML = `<div class="bar">
+        <div class="brand"><span class="mark">${walletIcon}</span><div>Cofre<small>orçamento de ${escapeHtml(names.join(" & "))}</small></div></div>
+        <div class="spacer"></div>
+        <div class="seg" id="scope-selector" aria-label="Escopo dos dados">${scopeButtons}${combinedButton}</div>
+        <div class="monthnav">
+          <button type="button" id="previous-month" aria-label="Mês anterior">‹</button>
+          <span class="lbl" id="month-label">${escapeHtml(monthLabel(state.month))}</span>
+          <button type="button" id="next-month" aria-label="Próximo mês">›</button>
+        </div>
+      </div>`;
+
+      navigation.innerHTML = ROUTES.map(route => `
+        <a href="${route.href}"${route.id === page ? ' aria-current="page"' : ""}>${route.label}</a>
+      `).join("");
+
+      header.querySelector("#scope-selector")?.addEventListener("click", event => {
+        const button = event.target.closest("button[data-scope]");
+        if (!button) return;
+        setUiState({ scope: button.dataset.scope });
+        render();
+        onContextChange();
+      });
+      header.querySelector("#previous-month")?.addEventListener("click", () => {
+        setUiState({ month: shiftMonth(getUiState().month, -1) });
+        render();
+        onContextChange();
+      });
+      header.querySelector("#next-month")?.addEventListener("click", () => {
+        setUiState({ month: shiftMonth(getUiState().month, 1) });
+        render();
+        onContextChange();
+      });
+    }
+
+    render();
+    return { render };
+  }
+
+  __exports.createNavigation = createNavigation;
+});
+
+__define("pages/configuracoes.js", function (__exports, __require) {
+  const { CHART_COLOR_VARIABLES } = __require("config.js");
+  const { connectDatabaseFile, exportDatabase, importDatabaseFile, openDatabaseFile, persistenceInfo, supportsDirectFileSave } = __require("data-service.js");
+  const { categoryById } = __require("features/recurring.js");
+  const { getDatabase, replaceDatabase, resetDatabase, saveDatabase } = __require("store.js");
+  const { initializeUiState } = __require("state.js");
+  const { cssValue, escapeAttribute, escapeHtml, getUserIds, money, safeColor, uid } = __require("utils.js");
+
+  function budgetPercentageClass(percentage) {
+    return percentage >= 100 ? "bad" : percentage >= 85 ? "warn" : "good";
+  }
+
+  function budgetSummaryBox(label, total, income) {
+    const percentage = income ? total / income * 100 : 0;
+    const difference = (income || 0) - total;
+    const differenceText = income ? `${difference >= 0 ? "sobra" : "passou"} ${money(Math.abs(difference))}` : "renda não informada";
+    return `<div class="sbox"><div class="lbl">${escapeHtml(label)}</div><div class="val tnum">${percentage.toFixed(0)}% <span class="pill ${budgetPercentageClass(percentage)}">${money(total)}</span></div><div class="sub">${differenceText}</div></div>`;
+  }
+
+  function renderStatus(root) {
+    const status = root.querySelector("#database-status");
+    if (!status) return;
+    const info = persistenceInfo(getDatabase());
+    status.innerHTML = `<b>${info.transactionCount}</b> lançamentos guardados (${info.exampleCount} de exemplo) · ${info.fileName ? `salvando em <b>${escapeHtml(info.fileName)}</b>` : "backup no navegador"}`;
+  }
+
+  function renderConfig(root) {
+    const database = getDatabase();
+    const userIds = getUserIds(database);
+    const incomes = Object.fromEntries(userIds.map(userId => [userId, Number(database.income[userId]) || 0]));
+    const limits = Object.fromEntries(userIds.map(userId => [
+      userId,
+      database.categories.reduce((sum, category) => sum + (Number(category.limits[userId]) || 0), 0),
+    ]));
+    const incomeTotal = Object.values(incomes).reduce((sum, value) => sum + value, 0);
+    const limitTotal = Object.values(limits).reduce((sum, value) => sum + value, 0);
+    const userHeaders = userIds.map(userId => `<th>Limite ${escapeHtml(database.names[userId] || userId)}</th><th>% renda ${escapeHtml(database.names[userId] || userId)}</th>`).join("");
+    const categoryRows = database.categories.map(category => {
+      const userCells = userIds.map(userId => {
+        const limit = Number(category.limits[userId]) || 0;
+        const percentage = incomes[userId] ? limit / incomes[userId] * 100 : 0;
+        return `<td><input type="number" data-key="limit" data-user="${escapeAttribute(userId)}" min="0" step="10" value="${limit}" aria-label="Limite de ${escapeAttribute(database.names[userId] || userId)}"></td><td class="tnum pctcalc ${budgetPercentageClass(percentage)}">${percentage.toFixed(1)}%</td>`;
+      }).join("");
+      return `<tr data-category="${escapeAttribute(category.id)}">
+        <td><input type="color" data-key="color" value="${escapeAttribute(safeColor(category.color, cssValue("--color-chart-1")))}" aria-label="Cor da categoria"></td>
+        <td><input type="text" data-key="name" value="${escapeAttribute(category.name)}" aria-label="Nome da categoria"></td>
+        ${userCells}
+        <td class="right"><input type="checkbox" data-key="cumulative" ${category.cumulative ? "checked" : ""} title="Soma mês a mês" aria-label="Categoria acumulativa"></td>
+        <td class="right"><button class="xbtn" type="button" data-delete-category="${escapeAttribute(category.id)}" aria-label="Excluir categoria">✕</button></td>
+      </tr>`;
+    }).join("") || `<tr><td colspan="${4 + userIds.length * 2}" class="empty">Nenhuma categoria cadastrada.</td></tr>`;
+    const summary = userIds.map(userId => budgetSummaryBox(database.names[userId] || userId, limits[userId], incomes[userId])).join("")
+      + (userIds.length > 1 ? budgetSummaryBox("Combinado", limitTotal, incomeTotal) : "");
+    const incomeFields = userIds.map(userId => `<label class="fld">${escapeHtml(database.names[userId] || userId)}<input type="number" data-income-user="${escapeAttribute(userId)}" min="0" step="50" value="${incomes[userId]}"></label>`).join("");
+    const capFields = userIds.map(userId => `<label class="fld">${escapeHtml(database.names[userId] || userId)}<input type="number" data-cap-user="${escapeAttribute(userId)}" min="0" step="50" value="${Number(database.monthlyCap[userId]) || 0}"></label>`).join("");
+    const nameFields = userIds.map((userId, index) => `<label class="fld">Usuário ${index + 1}<input type="text" data-name-user="${escapeAttribute(userId)}" value="${escapeAttribute(database.names[userId] || userId)}"></label>`).join("");
+    const canSaveDirectly = supportsDirectFileSave();
+    const summaryColumns = Math.min(userIds.length + (userIds.length > 1 ? 1 : 0), 3);
+
+    root.innerHTML = `<div class="sec-title">Categorias e limites mensais</div>
+    <div class="card scroll-x">
+      <table class="cfg-cats"><thead><tr><th>Cor</th><th>Categoria</th>${userHeaders}<th>Acumula</th><th></th></tr></thead><tbody>${categoryRows}</tbody></table>
+      <div class="cbody"><button class="btn ghost" type="button" id="add-category">+ Adicionar categoria</button></div>
+      <div class="cbody budget-summary" style="--column-count:${summaryColumns}">${summary}</div>
+    </div>
+    <div class="sec-title">Renda, limite mensal e alertas</div>
+    <div class="card cbody cfgblock">
+      <div><p class="hint hint-topless">Renda mensal (usada como referência de contexto)</p><div class="inline">${incomeFields}</div></div>
+      <div><p class="hint hint-topless">Limite máximo de gasto por mês (linha tracejada do gráfico · 0 = usa a soma dos limites das categorias)</p><div class="inline">${capFields}</div></div>
+      <div><p class="hint hint-topless">Quando disparar os alertas de categoria</p><div class="inline"><label class="fld">Aviso (amarelo) em %<input type="number" id="threshold-warning" min="1" max="200" value="${Math.round(database.thresholds.warn * 100)}"></label><label class="fld">Estouro (vermelho) em %<input type="number" id="threshold-over" min="1" max="300" value="${Math.round(database.thresholds.over * 100)}"></label></div></div>
+    </div>
+    <div class="sec-title">Nomes</div>
+    <div class="card cbody"><div class="inline">${nameFields}</div></div>
+    <div class="sec-title">Base de dados (arquivo local)</div>
+    <div class="card cbody">
+      <p class="hint hint-topless">Seus dados ficam no seu computador. ${canSaveDirectly ? "Conecte um arquivo .json para salvar automaticamente a cada mudança." : "Seu navegador não permite salvar direto no arquivo — use Exportar para gerar o backup e Importar para carregar."}</p>
+      <div class="inline">
+        ${canSaveDirectly ? `<button class="btn" type="button" id="connect-file">Conectar arquivo…</button><button class="btn ghost" type="button" id="open-file">Abrir arquivo…</button>` : ""}
+        <button class="btn ghost" type="button" id="export-database">Exportar backup</button>
+        <button class="btn ghost" type="button" id="import-database">Importar backup</button>
+        <input type="file" id="database-input" accept="application/json" class="hidden-input">
+        <button class="btn danger" type="button" id="wipe-database">Apagar tudo</button>
+      </div>
+      <p class="status mt-12" id="database-status"></p>
+    </div>`;
+    renderStatus(root);
+  }
+
+  function refreshAfterReplacement(root, refreshNavigation) {
+    initializeUiState(getUserIds(getDatabase()));
+    refreshNavigation();
+    renderConfig(root);
+  }
+
+  function mountPage({ root, toast, refreshNavigation }) {
+    root.addEventListener("click", async event => {
+      if (event.target.closest("#add-category")) {
+        const database = getDatabase();
+        const limits = Object.fromEntries(getUserIds(database).map(userId => [userId, 0]));
+        const colorVariable = CHART_COLOR_VARIABLES[database.categories.length % CHART_COLOR_VARIABLES.length];
+        database.categories.push({ id: uid(), name: "Nova categoria", color: cssValue(colorVariable), limits, cumulative: false });
+        saveDatabase();
+        renderConfig(root);
+        return;
+      }
+      const deleteButton = event.target.closest("[data-delete-category]");
+      if (deleteButton) {
+        const database = getDatabase();
+        const categoryId = deleteButton.dataset.deleteCategory;
+        if (database.transactions.some(transaction => transaction.cat === categoryId)
+          && !confirm("Há lançamentos nessa categoria. Remover mesmo assim? Eles ficarão sem categoria.")) return;
+        database.categories = database.categories.filter(category => category.id !== categoryId);
+        saveDatabase();
+        renderConfig(root);
+        return;
+      }
+      if (event.target.closest("#connect-file")) {
+        try {
+          await connectDatabaseFile(getDatabase());
+          renderStatus(root);
+          toast("Arquivo conectado. Alterações salvam sozinhas.");
+        } catch (error) {
+          if (error.name !== "AbortError") toast("Não foi possível conectar o arquivo");
+        }
+        return;
+      }
+      if (event.target.closest("#open-file")) {
+        try {
+          const database = await openDatabaseFile();
+          if (database) {
+            replaceDatabase(database, { replaceSeed: true });
+            refreshAfterReplacement(root, refreshNavigation);
+            toast("Dados carregados do arquivo.");
+          } else root.querySelector("#database-input").click();
+        } catch (error) {
+          if (error.name !== "AbortError") toast("Arquivo inválido");
+        }
+        return;
+      }
+      if (event.target.closest("#export-database")) { exportDatabase(getDatabase()); toast("Backup exportado."); return; }
+      if (event.target.closest("#import-database")) { root.querySelector("#database-input").click(); return; }
+      if (event.target.closest("#wipe-database") && confirm("Apagar TODOS os dados e recomeçar? Isso não pode ser desfeito.")) {
+        resetDatabase();
+        refreshAfterReplacement(root, refreshNavigation);
+        toast("Tudo apagado");
+      }
+    });
+
+    root.addEventListener("change", async event => {
+      if (event.target.id === "database-input" && event.target.files[0]) {
+        try {
+          replaceDatabase(await importDatabaseFile(event.target.files[0]), { replaceSeed: true });
+          refreshAfterReplacement(root, refreshNavigation);
+          toast("Dados importados.");
+        } catch {
+          toast("Arquivo inválido");
+        }
+        return;
+      }
+      const categoryRow = event.target.closest("[data-category]");
+      if (categoryRow) {
+        const category = categoryById(getDatabase(), categoryRow.dataset.category);
+        const key = event.target.dataset.key;
+        if (!category || !key) return;
+        if (key === "color") category.color = event.target.value;
+        else if (key === "name") category.name = event.target.value;
+        else if (key === "cumulative") category.cumulative = event.target.checked;
+        else if (key === "limit") category.limits[event.target.dataset.user] = Number(event.target.value) || 0;
+        saveDatabase();
+        renderConfig(root);
+        return;
+      }
+      const database = getDatabase();
+      if (event.target.dataset.incomeUser) database.income[event.target.dataset.incomeUser] = Number(event.target.value) || 0;
+      else if (event.target.dataset.capUser) database.monthlyCap[event.target.dataset.capUser] = Number(event.target.value) || 0;
+      else if (event.target.id === "threshold-warning") database.thresholds.warn = (Number(event.target.value) || 80) / 100;
+      else if (event.target.id === "threshold-over") database.thresholds.over = (Number(event.target.value) || 100) / 100;
+      else if (event.target.dataset.nameUser) {
+        const userId = event.target.dataset.nameUser;
+        database.names[userId] = event.target.value || `Usuário ${getUserIds(database).indexOf(userId) + 1}`;
+        refreshNavigation();
+      } else return;
+      saveDatabase();
+      renderConfig(root);
+    });
+
+    return { render: () => renderConfig(root) };
+  }
+
+  __exports.mountPage = mountPage;
+});
+
+__define("pages/dashboard.js", function (__exports, __require) {
+  const { DEFAULT_PAYMENT_METHOD, PAYMENT_METHODS } = __require("config.js");
+  const { donut } = __require("components/charts.js");
+  const { alertCard, kpi, kpiPill, kpiSplit } = __require("components/ui.js");
+  const { ensureRecurringForMonth } = __require("features/recurring.js");
+  const { getDatabase, saveDatabase } = __require("store.js");
+  const { getUiState } = __require("state.js");
+  const { escapeAttribute, escapeHtml, money, monthLabel, number, safeColor, scopeLabel, shiftMonth, usersInScope, yearMonth } = __require("utils.js");
+
+  const methodOf = transaction => transaction.method === "debito" ? "debito" : DEFAULT_PAYMENT_METHOD;
+
+  // Soma por forma de pagamento, ignorando categorias cumulativas — que já ficam
+  // fora do gasto do mês e aparecem em Saldos acumulados.
+  function spendingByMethod(transactions, cumulativeIds) {
+    const totals = { credito: 0, debito: 0 };
+    transactions
+      .filter(transaction => !cumulativeIds.has(transaction.cat))
+      .forEach(transaction => { totals[methodOf(transaction)] += Number(transaction.amount); });
+    return totals;
+  }
+
+  function transactionsInMonth(database, month, users) {
+    return database.transactions.filter(transaction => yearMonth(transaction.date) === month && users.includes(transaction.user));
+  }
+
+  function spendingByCategory(database, month, users) {
+    const spending = {};
+    transactionsInMonth(database, month, users).forEach(transaction => {
+      spending[transaction.cat] = (spending[transaction.cat] || 0) + Number(transaction.amount);
+    });
+    return spending;
+  }
+
+  function categoryLimit(category, users) {
+    return users.reduce((sum, userId) => sum + (Number(category.limits[userId]) || 0), 0);
+  }
+
+  function monthlyCap(database, users) {
+    return users.reduce((sum, userId) => sum + (Number(database.monthlyCap[userId]) || 0), 0);
+  }
+
+  function budgetStatus(database, percentage) {
+    if (percentage >= database.thresholds.over) return "bad";
+    if (percentage >= database.thresholds.warn) return "warn";
+    return "good";
+  }
+
+  function statusColor(status) {
+    if (status === "bad") return "var(--color-danger)";
+    if (status === "warn") return "var(--color-warning)";
+    return "var(--color-success)";
+  }
+
+  function renderAccumulated(database, users, selectedMonth) {
+    const cumulativeCategories = database.categories.filter(category => category.cumulative);
+    if (!cumulativeCategories.length) return "";
+    const forecastMonths = 3;
+    const cards = cumulativeCategories.map(category => {
+      const monthlyAmount = month => database.transactions
+        .filter(transaction => transaction.cat === category.id && users.includes(transaction.user) && yearMonth(transaction.date) === month)
+        .reduce((sum, transaction) => sum + Number(transaction.amount), 0);
+      const cumulativeAt = month => database.transactions
+        .filter(transaction => transaction.cat === category.id && users.includes(transaction.user) && yearMonth(transaction.date) <= month)
+        .reduce((sum, transaction) => sum + Number(transaction.amount), 0);
+      const series = [];
+      for (let index = 5; index >= 0; index -= 1) {
+        const month = shiftMonth(selectedMonth, -index);
+        series.push({ month, cumulative: cumulativeAt(month), addition: monthlyAmount(month) });
+      }
+      const total = series.at(-1).cumulative;
+      // O selo mostra o que se moveu no mês selecionado. Variação na janela de 6
+      // meses não serve: numa categoria sem saldo anterior ela é igual ao próprio
+      // total, que já está impresso logo abaixo em tamanho grande.
+      const monthMovement = series.at(-1).addition;
+      const averageMonthly = series.reduce((sum, item) => sum + item.addition, 0) / series.length;
+      const forecast = [];
+      for (let index = 1; index <= forecastMonths; index += 1) {
+        forecast.push({ month: shiftMonth(selectedMonth, index), cumulative: Math.max(0, total + averageMonthly * index), forecast: true });
+      }
+      const firstCumulative = series.findIndex(item => item.cumulative > 0);
+      const shown = firstCumulative > 0 ? series.slice(firstCumulative) : series;
+      const all = [...shown, ...forecast];
+      const maximum = Math.max(...all.map(item => item.cumulative), 1);
+      const bars = all.map(item => `<div class="bcol"><div class="bwrap"><div class="b ${item.month === selectedMonth ? "cur" : ""} ${item.forecast ? "forecast" : ""}" style="--bar-height:${Math.max(2, item.cumulative / maximum * 100).toFixed(2)}%"><span class="v">${item.cumulative ? number(item.cumulative) : ""}</span></div></div><div class="m">${escapeHtml(monthLabel(item.month).split(" de ")[0].slice(0, 3))}${item.forecast ? "*" : ""}</div></div>`).join("");
+      const trendUp = monthMovement >= 0;
+      // Mês sem movimento não ganha selo.
+      const trend = Math.abs(monthMovement) < .005
+        ? ""
+        : `<span class="pill ${trendUp ? "good" : "bad"}" title="${escapeAttribute(`movimento em ${monthLabel(selectedMonth)}`)}">${trendUp ? "▲" : "▼"} ${escapeHtml(money(Math.abs(monthMovement)))}</span>`;
+      return `<div class="card cbody">
+        <div class="acc-header"><h3><span class="cdot" style="--item-color:${safeColor(category.color)}"></span>${escapeHtml(category.name)}</h3><div class="inline"><span class="pill good">acumulado</span>${trend}</div></div>
+        <div class="tnum acc-value">${money(total)}</div>
+        <div class="bars short">${bars}</div>
+        <div class="hint forecast-note">* projeção com base na média de aportes dos últimos 6 meses</div>
+      </div>`;
+    }).join("");
+    return `<div class="sec-title">Saldos acumulados</div><div class="grid acc-grid" style="--column-count:${Math.min(cumulativeCategories.length, 2)}">${cards}</div>`;
+  }
+
+  function renderDashboard(root) {
+    const database = getDatabase();
+    const state = getUiState();
+    if (ensureRecurringForMonth(database, state.month)) saveDatabase();
+    const users = usersInScope(database, state.scope);
+    const spending = spendingByCategory(database, state.month, users);
+    const cumulativeIds = new Set(database.categories.filter(category => category.cumulative).map(category => category.id));
+    const categories = database.categories
+      .filter(category => !category.cumulative)
+      .map(category => ({ ...category, spent: spending[category.id] || 0, limit: categoryLimit(category, users) }));
+    const categoryIds = new Set(database.categories.map(category => category.id));
+    const pendingTransactions = transactionsInMonth(database, state.month, users)
+      .filter(transaction => !cumulativeIds.has(transaction.cat) && !categoryIds.has(transaction.cat));
+    const pendingSpent = pendingTransactions.reduce((sum, transaction) => sum + Number(transaction.amount), 0);
+    const totalSpent = categories.reduce((sum, category) => sum + category.spent, 0) + pendingSpent;
+    const totalLimit = categories.reduce((sum, category) => sum + category.limit, 0);
+    const percentage = totalLimit ? totalSpent / totalLimit : 0;
+    const income = users.reduce((sum, userId) => sum + (Number(database.income[userId]) || 0), 0);
+    const status = budgetStatus(database, percentage);
+
+    const overBudget = categories.filter(category => category.limit > 0 && category.spent / category.limit >= database.thresholds.over)
+      .sort((left, right) => right.spent / right.limit - left.spent / left.limit);
+    const nearLimit = categories.filter(category => category.limit > 0
+      && category.spent / category.limit >= database.thresholds.warn
+      && category.spent / category.limit < database.thresholds.over);
+    let alerts = "";
+    if (percentage >= database.thresholds.over) alerts += alertCard("bad", "Orçamento estourado", `Você gastou ${money(totalSpent)} de ${money(totalLimit)} (${(percentage * 100).toFixed(0)}%).`);
+    overBudget.forEach(category => { alerts += alertCard("bad", `${category.name} estourou`, `${money(category.spent)} de ${money(category.limit)} — ${(category.spent / category.limit * 100).toFixed(0)}% do limite.`); });
+    nearLimit.forEach(category => { alerts += alertCard("warn", `${category.name} perto do limite`, `${money(category.spent)} de ${money(category.limit)} — ${(category.spent / category.limit * 100).toFixed(0)}%.`); });
+    if (pendingTransactions.length) alerts += alertCard("warn", `${pendingTransactions.length} lançamento(s) sem categoria`, `${money(pendingSpent)} esperando categoria — defina na página Lançamentos.`);
+    const alertsHtml = alerts ? `<div class="sec-title">Alertas</div><div class="card cbody"><div class="alerts">${alerts}</div></div>` : "";
+
+    const donutItems = categories.filter(category => category.spent > 0).map(category => ({ name: category.name, color: category.color, spent: category.spent }));
+    if (pendingSpent > 0) donutItems.push({ name: "A definir", color: "var(--color-chart-empty)", spent: pendingSpent });
+    donutItems.sort((left, right) => right.spent - left.spent);
+    const legend = donutItems.map(category => `<div class="row"><span class="sw" style="--item-color:${safeColor(category.color)}"></span><span class="nm">${escapeHtml(category.name)}</span><span class="pc tnum">${totalSpent ? (category.spent / totalSpent * 100).toFixed(0) : 0}%</span></div>`).join("")
+      || `<div class="empty">Nenhum lançamento em ${escapeHtml(monthLabel(state.month))}.</div>`;
+
+    const months = [];
+    for (let index = 5; index >= 0; index -= 1) months.push(shiftMonth(state.month, -index));
+    const allMonthTotals = months.map(month => {
+      const byMethod = spendingByMethod(transactionsInMonth(database, month, users), cumulativeIds);
+      return { month, value: byMethod.credito + byMethod.debito, ...byMethod };
+    });
+    const firstUsed = allMonthTotals.findIndex(item => item.value > 0);
+    const monthTotals = firstUsed > 0 ? allMonthTotals.slice(firstUsed) : allMonthTotals;
+    const maximumValue = Math.max(...monthTotals.map(item => item.value), 1);
+    const ownCap = monthlyCap(database, users);
+    const cap = ownCap > 0 ? ownCap : totalLimit;
+    const chartTop = cap > 0 ? Math.max(maximumValue, cap) * 1.12 : maximumValue;
+    const bars = monthTotals.map(item => {
+      const itemStatus = cap > 0 ? budgetStatus(database, item.value / cap) : null;
+      const cssClass = cap > 0 ? `st-${itemStatus}` : item.month === state.month ? "cur" : "";
+      const title = cap > 0 ? `${monthLabel(item.month)}: ${money(item.value)} de ${money(cap)} (${(item.value / cap * 100).toFixed(0)}%)` : "";
+      // A parcela de débito aparece como faixa mais escura na base da barra,
+      // preservando a cor de status que a barra inteira já carrega.
+      const debitShare = item.value > 0 ? item.debito / item.value * 100 : 0;
+      const debitBand = debitShare > 0
+        ? `<span class="dseg" style="--seg-height:${debitShare.toFixed(2)}%" title="${escapeAttribute(`débito ${money(item.debito)}`)}"></span>`
+        : "";
+      return `<div class="bcol ${item.month === state.month ? "now" : ""}"${title ? ` title="${escapeAttribute(title)}"` : ""}><div class="bwrap"><div class="b ${cssClass}" style="--bar-height:${Math.max(2, item.value / chartTop * 100).toFixed(2)}%">${debitBand}<span class="v ${itemStatus === "bad" ? "over" : ""}">${item.value ? number(item.value) : ""}</span></div></div><div class="m">${escapeHtml(monthLabel(item.month).split(" de ")[0].slice(0, 3))}</div></div>`;
+    }).join("");
+    const capRule = cap > 0 ? `<div class="capover"><div class="capzone"><div class="caprule" style="--cap-position:${(cap / chartTop * 100).toFixed(1)}%"><span class="lbl">limite ${money(cap)}</span></div></div><div class="mspace">&nbsp;</div></div>` : "";
+
+    // Quando uma categoria estoura, a folga das outras é o que cobre a diferença.
+    // Em vez de reescrever limites, marcamos essa parcela como comprometida — o
+    // limite continua o mesmo, mas a barra mostra que aquele espaço já tem dono.
+    const overspend = categories.reduce((sum, category) => sum + Math.max(0, category.spent - category.limit), 0);
+    const slackOf = category => Math.max(0, category.limit - category.spent);
+    const totalSlack = categories.reduce((sum, category) => sum + slackOf(category), 0);
+    const covered = Math.min(overspend, totalSlack);
+    const uncovered = overspend - covered;
+    const committed = new Map();
+    if (covered > 0) {
+      categories.forEach(category => {
+        const slack = slackOf(category);
+        if (slack > 0) committed.set(category.id, covered * (slack / totalSlack));
+      });
+    }
+    const overCategories = categories.filter(category => category.spent > category.limit && category.limit > 0);
+
+    const meterCategories = categories.filter(category => category.limit > 0 || category.spent > 0)
+      .map(category => ({ ...category, ratio: category.limit ? category.spent / category.limit : category.spent > 0 ? 1.5 : 0 }))
+      .sort((left, right) => right.ratio - left.ratio);
+    const meters = meterCategories.map(category => {
+      const ratio = category.limit ? category.spent / category.limit : 0;
+      const categoryStatus = category.limit ? budgetStatus(database, ratio) : "warn";
+      const color = statusColor(categoryStatus);
+      const width = Math.min(100, ratio * 100);
+      const commitment = committed.get(category.id) || 0;
+      const commitWidth = category.limit ? Math.min(100 - width, commitment / category.limit * 100) : 0;
+      const commitBand = commitWidth > .05
+        ? `<div class="committed" style="--committed-width:${commitWidth.toFixed(2)}%" title="${escapeAttribute(`${money(commitment)} do limite comprometidos para cobrir ${overCategories.map(item => item.name).join(", ")}`)}"></div>`
+        : "";
+      return `<div class="meter" style="--meter-color:${color};--meter-width:${width.toFixed(2)}%"><div class="top"><span class="nm"><span class="cdot" style="--item-color:${safeColor(category.color)}"></span>${escapeHtml(category.name)}</span><span class="fig tnum">${money(category.spent)}${category.limit ? ` / ${money(category.limit)}` : ""}</span></div><div class="track"><div class="fill"></div>${commitBand}</div><span class="pct">${category.limit ? `${(ratio * 100).toFixed(0)}%` : "sem limite"}</span></div>`;
+    }).join("") || `<div class="empty">Defina limites nas Configurações para acompanhar o uso.</div>`;
+
+    const commitmentNote = covered > 0
+      ? `<div class="hint commit-note"><span class="swatch"></span>A faixa cinza é a parte do limite já comprometida para cobrir ${money(overspend)} de ${escapeHtml(overCategories.map(item => item.name).join(", "))}. Os limites seguem intactos.${uncovered > 0 ? ` Ainda faltam ${money(uncovered)}: a folga das outras categorias acabou.` : ""}</div>`
+      : "";
+
+    const spentByMethod = spendingByMethod(transactionsInMonth(database, state.month, users), cumulativeIds);
+    const methodParts = PAYMENT_METHODS.map(method => ({
+      id: method.id,
+      label: method.label,
+      value: spentByMethod[method.id],
+      formatted: money(spentByMethod[method.id]),
+    }));
+
+    root.innerHTML = `<div class="grid kpis">
+      ${kpiSplit("Gasto no mês", money(totalSpent), methodParts)}
+      ${kpi("Orçamento", money(totalLimit), "limite somado das categorias")}
+      ${kpi("Saldo do orçamento", money(totalLimit - totalSpent), totalLimit - totalSpent >= 0 ? "disponível" : "acima do limite")}
+      ${kpiPill("Uso do orçamento", `${(percentage * 100).toFixed(0)}%`, status, income ? `renda ${money(income)}` : "")}
+    </div>
+    ${renderAccumulated(database, users, state.month)}
+    <div class="grid two mt-16">
+      <div class="card cbody"><h3>Gasto por categoria</h3><p class="hint">${escapeHtml(monthLabel(state.month))} · ${escapeHtml(scopeLabel(database, state.scope))}</p><div class="donutwrap">${donut(donutItems, totalSpent)}<div class="legend">${legend}</div></div></div>
+      <div class="card cbody"><h3>Gasto por mês</h3><div class="bars mt-14">${capRule}${bars}</div></div>
+    </div>
+    <div class="sec-title">Uso por categoria</div>
+    <div class="card cbody"><div class="meters">${meters}</div>${commitmentNote}</div>
+    ${alertsHtml}`;
+  }
+
+  function mountPage({ root }) {
+    return { render: () => renderDashboard(root) };
+  }
+
+  __exports.mountPage = mountPage;
+});
+
+__define("pages/lancamentos.js", function (__exports, __require) {
+  const { DEFAULT_PAYMENT_METHOD, PAYMENT_METHODS } = __require("config.js");
+  const { userTone } = __require("components/ui.js");
+  const { importCsvFiles } = __require("features/csv-import.js");
+  const { categoryById, categoryExists, ensureRecurringForMonth } = __require("features/recurring.js");
+  const { getDatabase, saveDatabase } = __require("store.js");
+  const { getUiState, resetEntryFilter, setEntryFilter, setEntrySort, setUiState } = __require("state.js");
+  const { escapeAttribute, escapeHtml, getUserIds, money, monthLabel, scopeLabel, shiftMonth, todayISO, uid, usersInScope, yearMonth } = __require("utils.js");
+
+  function periodRange(state) {
+    const period = state.entryFilter.period;
+    if (period === "all") return null;
+    if (period === "cur") return { from: state.month, to: state.month };
+    if (/^\d{4}-\d{2}$/.test(period)) return { from: period, to: period };
+    const count = parseInt(period, 10) || 1;
+    return { from: shiftMonth(state.month, -(count - 1)), to: state.month };
+  }
+
+  function periodLabel(state) {
+    const period = state.entryFilter.period;
+    if (period === "all") return "todos os meses";
+    if (period === "cur") return monthLabel(state.month);
+    if (/^\d{4}-\d{2}$/.test(period)) return monthLabel(period);
+    const range = periodRange(state);
+    return `${monthLabel(range.from)} → ${monthLabel(range.to)}`;
+  }
+
+  function hasActiveFilter(state) {
+    const filter = state.entryFilter;
+    return Boolean(filter.period !== "cur" || filter.tipo || filter.cat || filter.method || filter.q.trim());
+  }
+
+  const methodOf = transaction => transaction.method === "debito" ? "debito" : DEFAULT_PAYMENT_METHOD;
+
+  // Categoria cumulativa é saldo que acumula, não gasto: aceita valor negativo
+  // para registrar retirada. Nas demais, valor negativo não faz sentido.
+  const acceptsWithdrawal = (database, categoryId) =>
+    Boolean(database.categories.find(category => category.id === categoryId)?.cumulative);
+
+  function validAmount(database, categoryId, amount) {
+    if (!Number.isFinite(amount) || amount === 0) return false;
+    return acceptsWithdrawal(database, categoryId) ? true : amount > 0;
+  }
+
+  function methodSelect(current, attribute) {
+    return `<select ${attribute} class="tsel">${PAYMENT_METHODS.map(method => `<option value="${method.id}"${selected(method.id, current)}>${escapeHtml(method.label)}</option>`).join("")}</select>`;
+  }
+
+  function filteredEntries(database, state) {
+    const users = usersInScope(database, state.scope);
+    const filter = state.entryFilter;
+    const range = periodRange(state);
+    let entries = database.transactions.filter(transaction => users.includes(transaction.user));
+    if (range) entries = entries.filter(transaction => {
+      const month = yearMonth(transaction.date);
+      return month >= range.from && month <= range.to;
+    });
+    if (filter.tipo) entries = entries.filter(transaction => filter.tipo === "none" ? !transaction.tipo : transaction.tipo === filter.tipo);
+    if (filter.cat) entries = entries.filter(transaction => filter.cat === "pend" ? !categoryExists(database, transaction.cat) : transaction.cat === filter.cat);
+    if (filter.method) entries = entries.filter(transaction => methodOf(transaction) === filter.method);
+    const query = filter.q.trim().toLowerCase();
+    if (query) entries = entries.filter(transaction => `${transaction.desc || ""} ${categoryById(database, transaction.cat)?.name || ""}`.toLowerCase().includes(query));
+    return entries;
+  }
+
+  function sortedEntries(database, state, entries) {
+    const { key, dir } = state.entrySort;
+    const direction = dir === "asc" ? 1 : -1;
+    const value = transaction => {
+      if (key === "amount") return Number(transaction.amount);
+      if (key === "user") return database.names[transaction.user] || transaction.user;
+      if (key === "cat") return categoryById(database, transaction.cat)?.name || "— a definir";
+      if (key === "desc") return transaction.desc || "";
+      if (key === "method") return methodOf(transaction);
+      if (key === "tipo") return transaction.tipo || "";
+      return transaction.date;
+    };
+    return entries.slice().sort((left, right) => {
+      const leftValue = value(left);
+      const rightValue = value(right);
+      const comparison = typeof leftValue === "number"
+        ? leftValue - rightValue
+        : String(leftValue).localeCompare(String(rightValue), "pt-BR", { sensitivity: "base" });
+      return comparison ? comparison * direction : right.date.localeCompare(left.date);
+    });
+  }
+
+  function selected(value, current) {
+    return value === current ? " selected" : "";
+  }
+
+  function categoryOptions(database, current = "", includePending = false) {
+    const options = database.categories.map(category => `<option value="${escapeAttribute(category.id)}"${selected(category.id, current)}>${escapeHtml(category.name)}</option>`).join("");
+    return `${includePending ? `<option value=""${selected("", current)}>— a definir —</option>` : ""}${options}`;
+  }
+
+  function userOptions(database, current) {
+    return getUserIds(database).map(userId => `<option value="${escapeAttribute(userId)}"${selected(userId, current)}>${escapeHtml(database.names[userId] || userId)}</option>`).join("");
+  }
+
+  function categorySelect(database, current, attribute) {
+    const pending = !categoryExists(database, current);
+    return `<select ${attribute} class="tsel ${pending ? "pend" : ""}">${categoryOptions(database, pending ? "" : current, true)}</select>`;
+  }
+
+  function typeSelect(current, attribute) {
+    return `<select ${attribute} class="tsel"><option value=""${selected("", current)}>—</option>${["M", "S", "F"].map(type => `<option value="${type}"${selected(type, current)}>${type}</option>`).join("")}</select>`;
+  }
+
+  function sortableHeader(state, key, label, extra = "") {
+    const active = state.entrySort.key === key;
+    const arrow = active ? state.entrySort.dir === "asc" ? "▲" : "▼" : "↕";
+    return `<th class="sortable ${active ? "on" : ""} ${extra}" data-sort="${key}" title="Ordenar por ${escapeAttribute(label.toLowerCase())}">${label}<span class="arw">${arrow}</span></th>`;
+  }
+
+  function renderRows(database, state, entries) {
+    return entries.map(transaction => {
+      const id = escapeAttribute(transaction.id);
+      if (state.editingEntryId === transaction.id) {
+        return `<tr>
+          <td><input type="date" data-edit-field="date" class="tin" value="${escapeAttribute(transaction.date)}"></td>
+          <td><select data-edit-field="user" class="tsel">${userOptions(database, transaction.user)}</select></td>
+          <td>${categorySelect(database, transaction.cat, 'data-edit-field="cat"')}</td>
+          <td><input type="text" data-edit-field="desc" class="tin" value="${escapeAttribute(transaction.desc || "")}"></td>
+          <td>${methodSelect(methodOf(transaction), 'data-edit-field="method"')}</td>
+          <td>${typeSelect(transaction.tipo, 'data-edit-field="tipo"')}</td>
+          <td class="right"><input type="number" data-edit-field="amount" class="tin amount" step="0.01" value="${Number(transaction.amount)}"></td>
+          <td class="right actions"><button class="btn compact" type="button" data-save="${id}">Salvar</button> <button class="xbtn" type="button" data-cancel aria-label="Cancelar edição">✕</button></td>
+        </tr>`;
+      }
+      const shownDate = transaction.date.split("-").reverse().join("/");
+      const automatic = transaction.recurringId ? ` <span class="tag">auto</span>` : "";
+      return `<tr>
+        <td class="tnum muted">${escapeHtml(shownDate)}</td>
+        <td><span class="who ${userTone(database, transaction.user)}">${escapeHtml(database.names[transaction.user] || transaction.user)}</span></td>
+        <td>${categorySelect(database, transaction.cat, `data-set-category="${id}"`)}</td>
+        <td>${escapeHtml(transaction.desc || "")}${automatic}</td>
+        <td><span class="tag method ${methodOf(transaction)}">${escapeHtml(PAYMENT_METHODS.find(item => item.id === methodOf(transaction)).short)}</span></td>
+        <td>${transaction.tipo ? `<span class="tag">${escapeHtml(transaction.tipo)}</span>` : ""}</td>
+        <td class="right tnum">${money(transaction.amount)}</td>
+        <td class="right actions"><button class="xbtn" type="button" data-edit="${id}" title="Editar">✎</button> <button class="xbtn" type="button" data-delete="${id}" title="Excluir">✕</button></td>
+      </tr>`;
+    }).join("");
+  }
+
+  function renderEntries(root) {
+    const database = getDatabase();
+    const state = getUiState();
+    if (ensureRecurringForMonth(database, state.month)) saveDatabase();
+    const users = usersInScope(database, state.scope);
+    const entries = sortedEntries(database, state, filteredEntries(database, state));
+    const totalInScope = database.transactions.filter(transaction => users.includes(transaction.user)).length;
+    const total = entries.reduce((sum, transaction) => sum + Number(transaction.amount), 0);
+    const pendingCount = entries.filter(transaction => !categoryExists(database, transaction.cat)).length;
+    const numberOfMonths = new Set(entries.map(transaction => yearMonth(transaction.date))).size;
+    const currentUser = state.scope === "__all__" ? getUserIds(database)[0] : state.scope;
+    const rows = renderRows(database, state, entries)
+      || `<tr><td colspan="8" class="empty">${hasActiveFilter(state) ? "Nenhum lançamento com esses filtros. Ajuste o período ou limpe os filtros." : `Nenhum lançamento em ${escapeHtml(monthLabel(state.month))}. Adicione acima ou cadastre gastos fixos em Recorrente.`}</td></tr>`;
+    const monthsWithTransactions = [...new Set(database.transactions.filter(transaction => users.includes(transaction.user)).map(transaction => yearMonth(transaction.date)))].sort().reverse();
+    const periodOptions = `<option value="cur"${selected("cur", state.entryFilter.period)}>Mês do topo (${escapeHtml(monthLabel(state.month))})</option>
+      <option value="3m"${selected("3m", state.entryFilter.period)}>Últimos 3 meses</option>
+      <option value="6m"${selected("6m", state.entryFilter.period)}>Últimos 6 meses</option>
+      <option value="12m"${selected("12m", state.entryFilter.period)}>Últimos 12 meses</option>
+      <option value="all"${selected("all", state.entryFilter.period)}>Todos os meses</option>
+      ${monthsWithTransactions.length ? `<optgroup label="Mês específico">${monthsWithTransactions.map(month => `<option value="${month}"${selected(month, state.entryFilter.period)}>${escapeHtml(monthLabel(month))}</option>`).join("")}</optgroup>` : ""}`;
+    const typeOptions = `<option value=""${selected("", state.entryFilter.tipo)}>Todos</option>
+      <option value="M"${selected("M", state.entryFilter.tipo)}>M · recorrente</option>
+      <option value="S"${selected("S", state.entryFilter.tipo)}>S · avulso</option>
+      <option value="F"${selected("F", state.entryFilter.tipo)}>F · parcelado</option>
+      <option value="none"${selected("none", state.entryFilter.tipo)}>— sem tipo —</option>`;
+    const filterCategoryOptions = `<option value=""${selected("", state.entryFilter.cat)}>Todas</option>${database.categories.map(category => `<option value="${escapeAttribute(category.id)}"${selected(category.id, state.entryFilter.cat)}>${escapeHtml(category.name)}</option>`).join("")}<option value="pend"${selected("pend", state.entryFilter.cat)}>— a definir —</option>`;
+    const providerLabel = database.importSettings?.providerLabel || "CSV da fatura";
+
+    root.innerHTML = `<div class="card cbody">
+      <h3>Novo lançamento</h3><p class="hint">O gasto entra no mês da data escolhida.</p>
+      <div class="formrow">
+        <label class="fld">Data<input type="date" id="entry-date" value="${todayISO()}"></label>
+        <label class="fld">Categoria<select id="entry-category">${categoryOptions(database)}</select></label>
+        <label class="fld">Descrição<input type="text" id="entry-description" placeholder="ex.: estabelecimento"></label>
+        <label class="fld">Valor (R$)<input type="number" id="entry-amount" step="0.01" placeholder="0,00"></label>
+        <label class="fld">Forma<select id="entry-method">${PAYMENT_METHODS.map(method => `<option value="${method.id}">${escapeHtml(method.label)}</option>`).join("")}</select></label>
+        <label class="fld">Tipo<select id="entry-type"><option value="">—</option><option value="M">M · recorrente</option><option value="S">S · avulso</option><option value="F">F · parcelado</option></select></label>
+        <label class="fld">Usuário<select id="entry-user">${userOptions(database, currentUser)}</select></label>
+        <button class="btn" type="button" id="add-entry">Adicionar</button>
+      </div>
+    </div>
+    <div class="sec-title">Lançamentos · ${escapeHtml(periodLabel(state))} · ${escapeHtml(scopeLabel(database, state.scope))}</div>
+    <div class="card cbody filterbar">
+      <label class="fld">Período<select id="filter-period">${periodOptions}</select></label>
+      <label class="fld">Forma<select id="filter-method"><option value=""${selected("", state.entryFilter.method)}>Todas</option>${PAYMENT_METHODS.map(method => `<option value="${method.id}"${selected(method.id, state.entryFilter.method)}>${escapeHtml(method.label)}</option>`).join("")}</select></label>
+      <label class="fld">Tipo<select id="filter-type">${typeOptions}</select></label>
+      <label class="fld">Categoria<select id="filter-category">${filterCategoryOptions}</select></label>
+      <label class="fld">Buscar<input type="search" id="filter-query" placeholder="descrição ou categoria" value="${escapeAttribute(state.entryFilter.q)}"></label>
+      <button class="btn ghost" type="button" id="clear-filters" ${hasActiveFilter(state) ? "" : "disabled"}>Limpar filtros</button>
+      <span class="fcount">${entries.length} de ${totalInScope} lançamentos${hasActiveFilter(state) ? " · filtrado" : ""}</span>
+    </div>
+    <div class="card cbody summary mt-12">
+      <div class="s"><b class="tnum">${money(total)}</b><span>total ${hasActiveFilter(state) ? "filtrado" : "no mês"}</span></div>
+      <div class="s"><b class="tnum">${entries.length}</b><span>lançamentos</span></div>
+      <div class="s"><b class="tnum">${money(entries.length ? total / entries.length : 0)}</b><span>ticket médio</span></div>
+      ${numberOfMonths > 1 ? `<div class="s"><b class="tnum">${money(total / numberOfMonths)}</b><span>média por mês (${numberOfMonths})</span></div>` : ""}
+      <div class="s"><b class="tnum ${pendingCount ? "pending" : "resolved"}">${pendingCount}</b><span>sem categoria</span></div>
+    </div>
+    <div class="card scroll-x mt-16"><table><thead><tr>${sortableHeader(state, "date", "Data")}${sortableHeader(state, "user", "Quem")}${sortableHeader(state, "cat", "Categoria")}${sortableHeader(state, "desc", "Descrição")}${sortableHeader(state, "method", "Forma")}${sortableHeader(state, "tipo", "Tipo")}${sortableHeader(state, "amount", "Valor", "right")}<th></th></tr></thead><tbody>${rows}</tbody>${entries.length ? `<tfoot><tr><td colspan="6" class="muted">Total do que está na tela</td><td class="right tnum"><b>${money(total)}</b></td><td></td></tr></tfoot>` : ""}</table></div>
+    <div class="sec-title">Importar ${escapeHtml(providerLabel)}</div>
+    <div class="card cbody"><div class="flex-title flex-title-start"><div><h3>Importar CSV</h3><p class="hint">Fatura do cartão ou extrato de conta do Nubank ou do Inter — o formato é detectado sozinho.</p></div><div class="inline">
+      <label class="fld import-user">Lançar como<select id="import-user">${userOptions(database, currentUser)}</select></label>
+      <label class="fld import-day">Fechamento do cartão<input type="number" id="import-closing-day" min="1" max="31" step="1" value="${database.cardClosingDay || 30}"></label>
+      <button class="btn" type="button" id="choose-csv" title="A categorização usa as regras da base; itens sem regra entram como ‘a definir’. Na fatura, compras no dia do fechamento ou depois entram no mês seguinte. No extrato de conta, entram só as saídas, na data em que aconteceram; pagamento de fatura e movimento de saldo compartilhado são ignorados, e aplicação em RDB vai para a reserva.">Escolher CSV…</button>
+      <input type="file" id="csv-input" accept=".csv,text/csv" multiple class="hidden-input">
+    </div></div></div>`;
+  }
+
+  function toggleSort(key) {
+    const sort = getUiState().entrySort;
+    if (sort.key === key) setEntrySort({ dir: sort.dir === "asc" ? "desc" : "asc" });
+    else setEntrySort({ key, dir: key === "amount" || key === "date" ? "desc" : "asc" });
+  }
+
+  function saveEditedEntry(row, id, toast) {
+    const database = getDatabase();
+    const transaction = database.transactions.find(item => item.id === id);
+    if (!transaction) return;
+    const field = name => row.querySelector(`[data-edit-field="${name}"]`);
+    const date = field("date").value;
+    const user = field("user").value;
+    const cat = field("cat").value;
+    const desc = field("desc").value.trim();
+    const tipo = field("tipo").value;
+    const method = field("method").value;
+    const amount = parseFloat(field("amount").value);
+    if (!date) { toast("Informe a data"); return; }
+    if (!validAmount(database, cat, amount)) {
+      toast(acceptsWithdrawal(database, cat) ? "Informe um valor diferente de zero" : "Informe um valor válido");
+      return;
+    }
+    Object.assign(transaction, { date, user, cat, desc, tipo, method, amount: Math.round(amount * 100) / 100 });
+    setUiState({ editingEntryId: null });
+    saveDatabase();
+    toast("Lançamento atualizado");
+  }
+
+  function addEntry(root, toast, refreshNavigation) {
+    const database = getDatabase();
+    const date = root.querySelector("#entry-date").value;
+    const cat = root.querySelector("#entry-category").value;
+    const desc = root.querySelector("#entry-description").value.trim();
+    const amount = parseFloat(root.querySelector("#entry-amount").value);
+    const tipo = root.querySelector("#entry-type").value;
+    const method = root.querySelector("#entry-method").value || DEFAULT_PAYMENT_METHOD;
+    const user = root.querySelector("#entry-user").value;
+    if (!date) { toast("Escolha a data"); return; }
+    if (!validAmount(database, cat, amount)) {
+      toast(acceptsWithdrawal(database, cat) ? "Informe um valor diferente de zero" : "Informe um valor válido");
+      return;
+    }
+    database.transactions.push({ id: uid(), user, date, cat, desc, amount: Math.round(amount * 100) / 100, tipo, method });
+    if (yearMonth(date) !== getUiState().month) setUiState({ month: yearMonth(date) });
+    saveDatabase();
+    refreshNavigation();
+    toast("Lançamento adicionado");
+  }
+
+  function mountPage({ root, toast, refreshNavigation }) {
+    root.addEventListener("click", event => {
+      if (event.target.closest("#add-entry")) { addEntry(root, toast, refreshNavigation); renderEntries(root); return; }
+      const sort = event.target.closest("th[data-sort]");
+      if (sort) { toggleSort(sort.dataset.sort); renderEntries(root); return; }
+      if (event.target.closest("#clear-filters")) { resetEntryFilter(); renderEntries(root); return; }
+      const deleteButton = event.target.closest("[data-delete]");
+      if (deleteButton) {
+        const database = getDatabase();
+        database.transactions = database.transactions.filter(transaction => transaction.id !== deleteButton.dataset.delete);
+        saveDatabase();
+        renderEntries(root);
+        toast("Lançamento removido");
+        return;
+      }
+      const editButton = event.target.closest("[data-edit]");
+      if (editButton) { setUiState({ editingEntryId: editButton.dataset.edit }); renderEntries(root); return; }
+      const saveButton = event.target.closest("[data-save]");
+      if (saveButton) { saveEditedEntry(saveButton.closest("tr"), saveButton.dataset.save, toast); renderEntries(root); return; }
+      if (event.target.closest("[data-cancel]")) { setUiState({ editingEntryId: null }); renderEntries(root); return; }
+      if (event.target.closest("#choose-csv")) root.querySelector("#csv-input").click();
+    });
+
+    root.addEventListener("change", async event => {
+      if (event.target.id === "filter-period") { setEntryFilter({ period: event.target.value }); renderEntries(root); return; }
+      if (event.target.id === "filter-type") { setEntryFilter({ tipo: event.target.value }); renderEntries(root); return; }
+      if (event.target.id === "filter-method") { setEntryFilter({ method: event.target.value }); renderEntries(root); return; }
+      if (event.target.id === "filter-category") { setEntryFilter({ cat: event.target.value }); renderEntries(root); return; }
+      if (event.target.id === "import-closing-day") {
+        getDatabase().cardClosingDay = Math.min(31, Math.max(1, parseInt(event.target.value, 10) || 30));
+        saveDatabase();
+        return;
+      }
+      const categorySelectElement = event.target.closest("[data-set-category]");
+      if (categorySelectElement) {
+        const transaction = getDatabase().transactions.find(item => item.id === categorySelectElement.dataset.setCategory);
+        if (transaction) { transaction.cat = categorySelectElement.value; saveDatabase(); renderEntries(root); }
+        return;
+      }
+      if (event.target.id === "csv-input" && event.target.files.length) {
+        try {
+          const stats = await importCsvFiles(event.target.files, {
+            database: getDatabase(),
+            userId: root.querySelector("#import-user").value,
+            closingDay: root.querySelector("#import-closing-day").value,
+          });
+          saveDatabase();
+          if (stats.maxDate) setUiState({ month: yearMonth(stats.maxDate) });
+          refreshNavigation();
+          renderEntries(root);
+          toast(`${stats.added} importado(s)${stats.statements ? ` · ${stats.statements} extrato(s) de conta` : ` · fechamento dia ${stats.closingDay}`}${stats.installments ? ` · ${stats.installments} parcelamento(s) programado(s)` : ""}${stats.withdrawals ? ` · ${stats.withdrawals} resgate(s) da reserva` : ""}${stats.pending ? ` · ${stats.pending} sem categoria` : ""}${stats.duplicate ? ` · ${stats.duplicate} repetido(s)` : ""}${stats.ignored ? ` · ${stats.ignored} transferência(s) interna(s) ignorada(s)` : ""}${stats.skipped ? ` · ${stats.skipped} entrada(s) ignorada(s)` : ""}`);
+        } catch {
+          toast("Não foi possível importar o CSV");
+        }
+      }
+    });
+
+    root.addEventListener("input", event => {
+      if (event.target.id !== "filter-query") return;
+      setEntryFilter({ q: event.target.value });
+      renderEntries(root);
+      const field = root.querySelector("#filter-query");
+      field?.focus();
+      field?.setSelectionRange(field.value.length, field.value.length);
+    });
+
+    return { render: () => renderEntries(root) };
+  }
+
+  __exports.mountPage = mountPage;
+  __exports.methodOf = methodOf;
+});
+
+__define("pages/recorrentes.js", function (__exports, __require) {
+  const { kpi, userTone } = __require("components/ui.js");
+  const { categoryById, ensureRecurringForMonth, generatedForRule, recurringPeriodLabel, ruleDueInMonth, syncGeneratedForRule } = __require("features/recurring.js");
+  const { getDatabase, saveDatabase } = __require("store.js");
+  const { getUiState, setUiState } = __require("state.js");
+  const { escapeAttribute, escapeHtml, getUserIds, money, monthLabel, safeColor, uid, yearMonth } = __require("utils.js");
+
+  function selected(value, current) {
+    return value === current ? " selected" : "";
+  }
+
+  function userOptions(database, current) {
+    return getUserIds(database).map(userId => `<option value="${escapeAttribute(userId)}"${selected(userId, current)}>${escapeHtml(database.names[userId] || userId)}</option>`).join("");
+  }
+
+  function categoryOptions(database, current) {
+    return database.categories.map(category => `<option value="${escapeAttribute(category.id)}"${selected(category.id, current)}>${escapeHtml(category.name)}</option>`).join("");
+  }
+
+  function renderRecurring(root) {
+    const database = getDatabase();
+    const state = getUiState();
+    if (ensureRecurringForMonth(database, state.month)) saveDatabase();
+    const userIds = getUserIds(database);
+    const editingRule = database.recurring.find(rule => rule.id === state.editingRuleId);
+    const ruleName = editingRule?.name || "";
+    const ruleCategory = editingRule?.cat || database.categories[0]?.id || "";
+    const ruleUser = editingRule?.user || (userIds.includes(state.scope) ? state.scope : userIds[0]);
+    const ruleKind = editingRule?.kind || "M";
+    const ruleDay = editingRule?.day || 1;
+    const ruleStart = editingRule?.start || state.month;
+    const ruleEnd = editingRule?.end || "";
+    const ruleAmount = editingRule?.amount ?? "";
+    const dueCount = database.recurring.filter(rule => ruleDueInMonth(rule, state.month)).length;
+    const generatedCount = database.recurring.filter(rule => generatedForRule(database, rule, state.month)).length;
+    const activeCount = database.recurring.filter(rule => rule.active !== false).length;
+    const rows = database.recurring.map(rule => {
+      const category = categoryById(database, rule.cat);
+      const due = ruleDueInMonth(rule, state.month);
+      const generated = generatedForRule(database, rule, state.month);
+      const status = rule.active === false
+        ? `<span class="pill bad">inativa</span>`
+        : generated ? `<span class="pill good">lançada</span>`
+          : due ? `<span class="pill warn">será lançada</span>`
+            : `<span class="pill good">fora do mês</span>`;
+      const id = escapeAttribute(rule.id);
+      return `<tr>
+        <td>${escapeHtml(rule.name || "")}</td>
+        <td><span class="who ${userTone(database, rule.user)}">${escapeHtml(database.names[rule.user] || rule.user)}</span></td>
+        <td><span class="cdot" style="--item-color:${safeColor(category?.color)}"></span>${escapeHtml(category?.name || "a definir")}</td>
+        <td class="right tnum">${money(rule.amount)}</td>
+        <td class="tnum">dia ${Number(rule.day) || 1}</td>
+        <td>${rule.kind === "F" ? "Parcelamento" : "Assinatura"}</td>
+        <td class="muted">${escapeHtml(recurringPeriodLabel(rule, state.month))}</td>
+        <td>${status}</td>
+        <td class="right actions"><button class="xbtn" type="button" data-edit-rule="${id}" title="Editar">✎</button> <button class="xbtn" type="button" data-toggle-rule="${id}" title="Ativar/Inativar">${rule.active !== false ? "⏸" : "▶"}</button> <button class="xbtn" type="button" data-delete-rule="${id}" title="Excluir regra">✕</button></td>
+      </tr>`;
+    }).join("") || `<tr><td colspan="9" class="empty">Nenhuma assinatura ou parcelamento cadastrado.</td></tr>`;
+    const recurringTotal = database.transactions
+      .filter(transaction => userIds.includes(transaction.user) && yearMonth(transaction.date) === state.month && transaction.recurringId)
+      .reduce((sum, transaction) => sum + Number(transaction.amount), 0);
+
+    root.innerHTML = `<div class="grid kpis">
+      ${kpi("Regras ativas", activeCount, "assinaturas e parcelamentos")}
+      ${kpi("Previstas no mês", dueCount, monthLabel(state.month))}
+      ${kpi("Lançadas automaticamente", generatedCount, "sem precisar clicar em botão")}
+      ${kpi("Total recorrente", money(recurringTotal), monthLabel(state.month))}
+    </div>
+    <div class="sec-title">Cadastro recorrente</div>
+    <div class="card cbody">
+      <h3>${editingRule ? "Editar recorrente" : "Novo recorrente"}</h3>
+      <div class="ruleform">
+        <label class="fld wide">Descrição<input type="text" id="rule-name" placeholder="ex.: serviço mensal" value="${escapeAttribute(ruleName)}"></label>
+        <label class="fld">Categoria<select id="rule-category">${categoryOptions(database, ruleCategory)}</select></label>
+        <label class="fld">Valor (R$)<input type="number" id="rule-amount" step="0.01" min="0" placeholder="0,00" value="${escapeAttribute(ruleAmount)}"></label>
+        <label class="fld wide">Tipo<select id="rule-kind"><option value="M"${selected("M", ruleKind)}>Assinatura mensal</option><option value="F"${selected("F", ruleKind)}>Parcelamento até mês final</option></select></label>
+        <label class="fld">Dia do mês<input type="number" id="rule-day" min="1" max="31" step="1" value="${ruleDay}"></label>
+        <label class="fld">Início<input type="month" id="rule-start" value="${escapeAttribute(ruleStart)}"></label>
+        <label class="fld">Final<input type="month" id="rule-end" value="${escapeAttribute(ruleEnd)}"></label>
+        <label class="fld">Usuário<select id="rule-user">${userOptions(database, ruleUser)}</select></label>
+        <button class="btn" type="button" id="save-rule">${editingRule ? "Salvar regra" : "Cadastrar regra"}</button>
+        ${editingRule ? `<button class="btn ghost" type="button" id="cancel-rule-edit">Cancelar edição</button>` : ""}
+      </div>
+    </div>
+    <div class="sec-title">Regras cadastradas</div>
+    <div class="card scroll-x"><table><thead><tr><th>Descrição</th><th>Quem</th><th>Categoria</th><th class="right">Valor</th><th>Dia</th><th>Tipo</th><th>Período</th><th>Status em ${escapeHtml(monthLabel(state.month))}</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }
+
+  function readRuleForm(root, toast) {
+    const name = root.querySelector("#rule-name").value.trim();
+    const cat = root.querySelector("#rule-category").value;
+    const amount = parseFloat(root.querySelector("#rule-amount").value);
+    const kind = root.querySelector("#rule-kind").value;
+    const day = Math.min(31, Math.max(1, parseInt(root.querySelector("#rule-day").value, 10) || 1));
+    const start = root.querySelector("#rule-start").value || getUiState().month;
+    const end = root.querySelector("#rule-end").value;
+    const user = root.querySelector("#rule-user").value;
+    if (!name) { toast("Informe a descrição da assinatura ou parcelamento"); return null; }
+    if (!(amount > 0)) { toast("Informe um valor válido"); return null; }
+    if (kind === "F" && !end) { toast("Informe o mês final do parcelamento"); return null; }
+    if (end && end < start) { toast("O mês final não pode ser anterior ao início"); return null; }
+    return { name, cat, amount: Math.round(amount * 100) / 100, kind, day, start, end, user };
+  }
+
+  function saveRule(root, toast) {
+    const formData = readRuleForm(root, toast);
+    if (!formData) return false;
+    const database = getDatabase();
+    const state = getUiState();
+    let rule = database.recurring.find(item => item.id === state.editingRuleId);
+    if (rule) {
+      Object.assign(rule, formData);
+      setUiState({ editingRuleId: null });
+      toast("Regra atualizada");
+    } else {
+      rule = { id: uid(), active: true, ...formData };
+      database.recurring.push(rule);
+      toast("Regra cadastrada");
+    }
+    syncGeneratedForRule(database, rule, state.month);
+    saveDatabase();
+    return true;
+  }
+
+  function mountPage({ root, toast }) {
+    root.addEventListener("click", event => {
+      if (event.target.closest("#save-rule")) { if (saveRule(root, toast)) renderRecurring(root); return; }
+      if (event.target.closest("#cancel-rule-edit")) { setUiState({ editingRuleId: null }); renderRecurring(root); return; }
+      const editButton = event.target.closest("[data-edit-rule]");
+      if (editButton) { setUiState({ editingRuleId: editButton.dataset.editRule }); renderRecurring(root); return; }
+      const toggleButton = event.target.closest("[data-toggle-rule]");
+      if (toggleButton) {
+        const rule = getDatabase().recurring.find(item => item.id === toggleButton.dataset.toggleRule);
+        if (rule) {
+          rule.active = rule.active === false;
+          saveDatabase();
+          renderRecurring(root);
+          toast(rule.active ? "Regra ativada" : "Regra inativada");
+        }
+        return;
+      }
+      const deleteButton = event.target.closest("[data-delete-rule]");
+      if (deleteButton && confirm("Excluir esta regra recorrente? Os lançamentos já criados serão mantidos.")) {
+        const database = getDatabase();
+        database.recurring = database.recurring.filter(rule => rule.id !== deleteButton.dataset.deleteRule);
+        if (getUiState().editingRuleId === deleteButton.dataset.deleteRule) setUiState({ editingRuleId: null });
+        saveDatabase();
+        renderRecurring(root);
+        toast("Regra excluída");
+      }
+    });
+    return { render: () => renderRecurring(root) };
+  }
+
+  __exports.mountPage = mountPage;
+});
+
+__define("state.js", function (__exports, __require) {
+  const { ALL_USERS_SCOPE, UI_STATE_KEY } = __require("config.js");
+  const { todayISO, yearMonth } = __require("utils.js");
+
+  const defaults = {
+    scope: "",
+    month: yearMonth(todayISO()),
+    entryFilter: { period: "cur", tipo: "", cat: "", method: "", q: "" },
+    entrySort: { key: "date", dir: "desc" },
+    editingEntryId: null,
+    editingRuleId: null,
+  };
+
+  const state = {
+    ...defaults,
+    entryFilter: { ...defaults.entryFilter },
+    entrySort: { ...defaults.entrySort },
+  };
+
+  function readStoredState() {
+    try {
+      const parsed = JSON.parse(sessionStorage.getItem(UI_STATE_KEY));
+      return parsed && typeof parsed === "object" ? parsed : {};
+    } catch {
+      return {};
+    }
+  }
+
+  function persistState() {
+    try {
+      sessionStorage.setItem(UI_STATE_KEY, JSON.stringify({
+        scope: state.scope,
+        month: state.month,
+        entryFilter: state.entryFilter,
+        entrySort: state.entrySort,
+      }));
+    } catch {
+      // A interface continua funcional quando o armazenamento da sessão está indisponível.
+    }
+  }
+
+  function initializeUiState(userIds) {
+    const stored = readStoredState();
+    Object.assign(state, stored);
+    state.entryFilter = { ...defaults.entryFilter, ...(stored.entryFilter || {}) };
+    state.entrySort = { ...defaults.entrySort, ...(stored.entrySort || {}) };
+    const allowedScopes = [...userIds, ALL_USERS_SCOPE];
+    if (!allowedScopes.includes(state.scope)) state.scope = userIds[0] || ALL_USERS_SCOPE;
+    if (!/^\d{4}-\d{2}$/.test(state.month)) state.month = defaults.month;
+    persistState();
+    return state;
+  }
+
+  const getUiState = () => state;
+
+  function setUiState(changes) {
+    Object.assign(state, changes);
+    persistState();
+    return state;
+  }
+
+  function setEntryFilter(changes) {
+    state.entryFilter = { ...state.entryFilter, ...changes };
+    persistState();
+  }
+
+  function resetEntryFilter() {
+    state.entryFilter = { ...defaults.entryFilter };
+    persistState();
+  }
+
+  function setEntrySort(changes) {
+    state.entrySort = { ...state.entrySort, ...changes };
+    persistState();
+  }
+
+  __exports.initializeUiState = initializeUiState;
+  __exports.setUiState = setUiState;
+  __exports.setEntryFilter = setEntryFilter;
+  __exports.resetEntryFilter = resetEntryFilter;
+  __exports.setEntrySort = setEntrySort;
+  __exports.getUiState = getUiState;
+});
+
+__define("store.js", function (__exports, __require) {
+  const { clone } = __require("utils.js");
+  const { persistDatabase } = __require("data-service.js");
+
+  let database = null;
+  let seedDatabase = null;
+  let loadMetadata = null;
+  let persistenceErrorHandler = () => {};
+
+  function initializeStore(loadResult, onPersistenceError) {
+    database = loadResult.database;
+    seedDatabase = clone(loadResult.seed);
+    loadMetadata = { source: loadResult.source, warning: loadResult.warning };
+    persistenceErrorHandler = onPersistenceError || (() => {});
+  }
+
+  function getDatabase() {
+    if (!database) throw new Error("A base ainda não foi inicializada.");
+    return database;
+  }
+
+  function saveDatabase() {
+    persistDatabase(getDatabase(), persistenceErrorHandler);
+  }
+
+  function replaceDatabase(nextDatabase, { replaceSeed = false } = {}) {
+    database = nextDatabase;
+    if (replaceSeed) seedDatabase = clone(nextDatabase);
+    saveDatabase();
+    return database;
+  }
+
+  function resetDatabase() {
+    database = clone(seedDatabase);
+    database.transactions = [];
+    database.recurring = [];
+    saveDatabase();
+    return database;
+  }
+
+  __exports.initializeStore = initializeStore;
+  __exports.getDatabase = getDatabase;
+  __exports.saveDatabase = saveDatabase;
+  __exports.replaceDatabase = replaceDatabase;
+  __exports.resetDatabase = resetDatabase;
+});
+
+__define("utils.js", function (__exports, __require) {
+  const { ALL_USERS_SCOPE } = __require("config.js");
+
+  const money = value => new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(Number(value) || 0);
+
+  const number = value => new Intl.NumberFormat("pt-BR", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(Number(value) || 0);
+
+  function uid() {
+    if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID();
+    return Math.random().toString(36).slice(2, 9);
+  }
+
+  const yearMonth = date => String(date || "").slice(0, 7);
+  const todayISO = () => new Date().toISOString().slice(0, 10);
+
+  function monthLabel(yearMonthValue) {
+    const [year, month] = String(yearMonthValue).split("-");
+    const date = new Date(Number(year), Number(month) - 1, 1);
+    return date.toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
+  }
+
+  function shiftMonth(yearMonthValue, delta) {
+    const [year, month] = String(yearMonthValue).split("-").map(Number);
+    const date = new Date(year, month - 1 + delta, 1);
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  const escapeAttribute = escapeHtml;
+  const getUserIds = database => Object.keys(database?.names || {});
+
+  function usersInScope(database, scope) {
+    const ids = getUserIds(database);
+    return scope === ALL_USERS_SCOPE ? ids : ids.includes(scope) ? [scope] : ids.slice(0, 1);
+  }
+
+  function scopeLabel(database, scope) {
+    const ids = usersInScope(database, scope);
+    return ids.map(id => database.names[id] || id).join(scope === ALL_USERS_SCOPE ? " + " : "");
+  }
+
+  function cssValue(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  function safeColor(value, fallback = "var(--color-chart-empty)") {
+    const candidate = String(value || "").trim();
+    return /^(#[0-9a-f]{3,8}|rgb\([\d\s.,%]+\)|rgba\([\d\s.,%]+\)|hsl\([\d\s.,%]+\)|hsla\([\d\s.,%]+\))$/i.test(candidate)
+      ? candidate
+      : fallback;
+  }
+
+  function clone(value) {
+    return globalThis.structuredClone ? structuredClone(value) : JSON.parse(JSON.stringify(value));
+  }
+
+  __exports.uid = uid;
+  __exports.monthLabel = monthLabel;
+  __exports.shiftMonth = shiftMonth;
+  __exports.escapeHtml = escapeHtml;
+  __exports.usersInScope = usersInScope;
+  __exports.scopeLabel = scopeLabel;
+  __exports.cssValue = cssValue;
+  __exports.safeColor = safeColor;
+  __exports.clone = clone;
+  __exports.money = money;
+  __exports.number = number;
+  __exports.yearMonth = yearMonth;
+  __exports.todayISO = todayISO;
+  __exports.escapeAttribute = escapeAttribute;
+  __exports.getUserIds = getUserIds;
+});
+
+
+  // ---- boot
+  var ui = __require("components/ui.js");
+  var dataService = __require("data-service.js");
+  var navegacao = __require("navigation.js");
+  var loja = __require("store.js");
+  var estado = __require("state.js");
+  var utilidades = __require("utils.js");
+
+  var toast = ui.createToast(document.getElementById("toast"));
+  var paginaAtual = null;
+  var navegador = null;
+  var controlador = null;
+
+  function conteudo() { return document.getElementById("page-content"); }
+
+  function montar(pagina) {
+    paginaAtual = pagina;
+    document.body.dataset.page = pagina;
+
+    // Trocar de página reaproveitaria o mesmo <main>, e cada mountPage() registra
+    // seus próprios listeners nele. Um <main> novo descarta os antigos junto.
+    var anterior = conteudo();
+    var raiz = document.createElement("main");
+    raiz.id = "page-content";
+    anterior.replaceWith(raiz);
+
+    navegador = navegacao.createNavigation({
+      page: pagina,
+      getDatabase: loja.getDatabase,
+      onContextChange: function () { if (controlador) controlador.render(); },
+    });
+
+    controlador = __require("pages/" + pagina + ".js").mountPage({
+      root: raiz,
+      toast: toast,
+      refreshNavigation: function () { navegador.render(); },
+    });
+    controlador.render();
+  }
+
+  function erroFatal(mensagem) {
+    conteudo().innerHTML =
+      '<div class="card cbody fatal-error"><h1>Não foi possível iniciar o Cofre</h1><p>' +
+      utilidades.escapeHtml(mensagem) +
+      "</p></div>";
+  }
+
+  document.getElementById("app-navigation").addEventListener("click", function (evento) {
+    var link = evento.target.closest("a[href]");
+    if (!link) return;
+    var achado = /^([a-z_-]+)\.html$/.exec(link.getAttribute("href") || "");
+    if (!achado) return;
+    // Sem arquivos separados para abrir: a navegação acontece aqui dentro.
+    evento.preventDefault();
+    var pagina = achado[1];
+    if (PAGINAS.indexOf(pagina) === -1 || pagina === paginaAtual) return;
+    montar(pagina);
+    window.scrollTo(0, 0);
+  });
+
+  dataService.loadInitialDatabase().then(function (resultado) {
+    loja.initializeStore(resultado, function () { toast("Não consegui salvar no arquivo conectado"); });
+    estado.initializeUiState(utilidades.getUserIds(loja.getDatabase()));
+    montar("dashboard");
+    if (resultado.warning) setTimeout(function () { toast(resultado.warning); }, 0);
+  }).catch(function (erro) {
+    erroFatal(erro && erro.message ? erro.message : String(erro));
+  });
+})();
+</script>
+</body>
+</html>
